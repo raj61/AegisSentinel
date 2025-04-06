@@ -1,0 +1,41 @@
+{
+  "manifest_path": "examples/kubernetes/microservices-demo.yaml",
+  "logs_path": "simulation/data/sample-logs.jsonl",
+  "metrics_path": "simulation/data/sample-metrics.jsonl",
+  "anomalies": [
+    {
+      "type": "memory_leak",
+      "service": "backend",
+      "start_time": 60,
+      "duration": 120
+    },
+    {
+      "type": "network_latency",
+      "service": "database",
+      "start_time": 240,
+      "duration": 120
+    },
+    {
+      "type": "cpu_spike",
+      "service": "frontend",
+      "start_time": 420,
+      "duration": 120
+    }
+  ],
+  "remediation_actions": [
+    {
+      "action": "restart_pod",
+      "service": "backend",
+      "time": 180,
+      "parameters": {}
+    },
+    {
+      "action": "scale_up",
+      "service": "frontend",
+      "time": 540,
+      "parameters": {
+        "replicas": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{"timestamp": "2025-04-05T12:00:00.000Z", "level": "INFO", "service": "frontend", "message": "Application started successfully"}
+{"timestamp": "2025-04-05T12:00:01.000Z", "level": "INFO", "service": "backend", "message": "Connected to database"}
+{"timestamp": "2025-04-05T12:00:02.000Z", "level": "INFO", "service": "database", "message": "Database initialized"}
+{"timestamp": "2025-04-05T12:01:00.000Z", "level": "INFO", "service": "frontend", "message": "Request received: GET /api/users"}
+{"timestamp": "2025-04-05T12:01:01.000Z", "level": "INFO", "service": "backend", "message": "Processing request for users"}
+{"timestamp": "2025-04-05T12:01:02.000Z", "level": "INFO", "service": "database", "message": "Executing query: SELECT * FROM users"}
+{"timestamp": "2025-04-05T12:01:03.000Z", "level": "INFO", "service": "backend", "message": "Returning 10 users"}
+{"timestamp": "2025-04-05T12:01:04.000Z", "level": "INFO", "service": "frontend", "message": "Response sent: 200 OK"}
+{"timestamp": "2025-04-05T12:02:00.000Z", "level": "WARN", "service": "backend", "message": "Memory usage increasing: 60%"}
+{"timestamp": "2025-04-05T12:02:30.000Z", "level": "WARN", "service": "backend", "message": "Memory usage increasing: 70%"}
+{"timestamp": "2025-04-05T12:03:00.000Z", "level": "ERROR", "service": "backend", "message": "Memory usage critical: 85%"}
+{"timestamp": "2025-04-05T12:03:30.000Z", "level": "ERROR", "service": "backend", "message": "Out of memory error in process"}
+{"timestamp": "2025-04-05T12:04:00.000Z", "level": "INFO", "service": "backend", "message": "Process restarted"}
+{"timestamp": "2025-04-05T12:04:30.000Z", "level": "INFO", "service": "backend", "message": "Memory usage normal: 30%"}
+{"timestamp": "2025-04-05T12:05:00.000Z", "level": "INFO", "service": "frontend", "message": "Request received: GET /api/products"}
+{"timestamp": "2025-04-05T12:05:01.000Z", "level": "INFO", "service": "backend", "message": "Processing request for products"}
+{"timestamp": "2025-04-05T12:05:02.000Z", "level": "INFO", "service": "database", "message": "Executing query: SELECT * FROM products"}
+{"timestamp": "2025-04-05T12:05:03.000Z", "level": "WARN", "service": "database", "message": "Slow query execution: 2.5s"}
+{"timestamp": "2025-04-05T12:05:04.000Z", "level": "INFO", "service": "backend", "message": "Returning 100 products"}
+{"timestamp": "2025-04-05T12:05:05.000Z", "level": "INFO", "service": "frontend", "message": "Response sent: 200 OK"}
+{"timestamp": "2025-04-05T12:06:00.000Z", "level": "INFO", "service": "frontend", "message": "Request received: GET /api/orders"}
+{"timestamp": "2025-04-05T12:06:01.000Z", "level": "INFO", "service": "backend", "message": "Processing request for orders"}
+{"timestamp": "2025-04-05T12:06:02.000Z", "level": "ERROR", "service": "database", "message": "Connection timeout"}
+{"timestamp": "2025-04-05T12:06:03.000Z", "level": "ERROR", "service": "backend", "message": "Failed to retrieve orders: database connection error"}
+{"timestamp": "2025-04-05T12:06:04.000Z", "level": "ERROR", "service": "frontend", "message": "Response sent: 500 Internal Server Error"}
+{"timestamp": "2025-04-05T12:06:30.000Z", "level": "WARN", "service": "database", "message": "Network latency increasing: 200ms"}
+{"timestamp": "2025-04-05T12:07:00.000Z", "level": "WARN", "service": "database", "message": "Network latency increasing: 500ms"}
+{"timestamp": "2025-04-05T12:07:30.000Z", "level": "ERROR", "service": "database", "message": "Network latency critical: 1000ms"}
+{"timestamp": "2025-04-05T12:08:00.000Z", "level": "INFO", "service": "database", "message": "Network connection reset"}
+{"timestamp": "2025-04-05T12:08:30.000Z", "level": "INFO", "service": "database", "message": "Network latency normal: 50ms"}
+{"timestamp": "2025-04-05T12:09:00.000Z", "level": "INFO", "service": "frontend", "message": "Request received: GET /api/orders"}
+{"timestamp": "2025-04-05T12:09:01.000Z", "level": "INFO", "service": "backend", "message": "Processing request for orders"}
+{"timestamp": "2025-04-05T12:09:02.000Z", "level": "INFO", "service": "database", "message": "Executing query: SELECT * FROM orders"}
+{"timestamp": "2025-04-05T12:09:03.000Z", "level": "INFO", "service": "backend", "message": "Returning 25 orders"}
+{"timestamp": "2025-04-05T12:09:04.000Z", "level": "INFO", "service": "frontend", "message": "Response sent: 200 OK"}
+{"timestamp": "2025-04-05T12:10:00.000Z", "level": "WARN", "service": "frontend", "message": "CPU usage increasing: 70%"}
+{"timestamp": "2025-04-05T12:10:30.000Z", "level": "WARN", "service": "frontend", "message": "CPU usage increasing: 85%"}
+{"timestamp": "2025-04-05T12:11:00.000Z", "level": "ERROR", "service": "frontend", "message": "CPU usage critical: 95%"}
+{"timestamp": "2025-04-05T12:11:30.000Z", "level": "ERROR", "service": "frontend", "message": "Response time degraded: 2000ms"}
+{"timestamp": "2025-04-05T12:12:00.000Z", "level": "INFO", "service": "frontend", "message": "Scaling up: 3 replicas"}
+{"timestamp": "2025-04-05T12:12:30.000Z", "level": "INFO", "service": "frontend", "message": "CPU usage normal: 40%"}
+{"timestamp": "2025-04-05T12:13:00.000Z", "level": "INFO", "service": "frontend", "message": "Response time normal: 200ms"}

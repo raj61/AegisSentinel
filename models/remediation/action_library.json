@@ -1,0 +1,72 @@
+{
+  "restart_service": {
+    "action_id": "restart_service",
+    "name": "Restart Service",
+    "description": "Restart a service to clear its state",
+    "target_type": "service",
+    "parameters": {},
+    "preconditions": [
+      "service_exists"
+    ],
+    "estimated_duration": 30,
+    "risk_level": 2
+  },
+  "scale_service": {
+    "action_id": "scale_service",
+    "name": "Scale Service",
+    "description": "Scale a service to handle more load",
+    "target_type": "service",
+    "parameters": {
+      "replicas": "int"
+    },
+    "preconditions": [
+      "service_exists",
+      "can_scale"
+    ],
+    "estimated_duration": 60,
+    "risk_level": 1
+  },
+  "rollback_deployment": {
+    "action_id": "rollback_deployment",
+    "name": "Rollback Deployment",
+    "description": "Rollback to a previous version",
+    "target_type": "deployment",
+    "parameters": {
+      "to_version": "string"
+    },
+    "preconditions": [
+      "service_exists",
+      "has_previous_version"
+    ],
+    "estimated_duration": 120,
+    "risk_level": 3
+  },
+  "drain_node": {
+    "action_id": "drain_node",
+    "name": "Drain Node",
+    "description": "Drain a node to move workloads",
+    "target_type": "node",
+    "parameters": {
+      "node": "string"
+    },
+    "preconditions": [
+      "node_exists",
+      "can_drain"
+    ],
+    "estimated_duration": 300,
+    "risk_level": 3
+  },
+  "clear_cache": {
+    "action_id": "clear_cache",
+    "name": "Clear Cache",
+    "description": "Clear a service cache",
+    "target_type": "service",
+    "parameters": {},
+    "preconditions": [
+      "service_exists",
+      "has_cache"
+    ],
+    "estimated_duration": 15,
+    "risk_level": 1
+  }
+}

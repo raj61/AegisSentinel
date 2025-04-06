@@ -1,0 +1,53 @@
+{
+  "rules": [
+    {
+      "condition": {
+        "type": "cpu_spike",
+        "severity": {
+          "min": 3
+        }
+      },
+      "action": "Scale Service",
+      "parameters": {
+        "replicas": "+1"
+      }
+    },
+    {
+      "condition": {
+        "type": "memory_leak",
+        "severity": {
+          "min": 4
+        }
+      },
+      "action": "Restart Service",
+      "parameters": {}
+    },
+    {
+      "condition": {
+        "type": "error_spike",
+        "severity": {
+          "min": 3
+        }
+      },
+      "action": "Rollback Deployment",
+      "parameters": {
+        "to_version": "previous"
+      }
+    },
+    {
+      "condition": {
+        "type": "disk_full",
+        "severity": {
+          "min": 4
+        }
+      },
+      "action": "Clear Cache",
+      "parameters": {}
+    }
+  ],
+  "config": {
+    "default_severity_threshold": 3,
+    "enable_auto_remediation": true,
+    "max_concurrent_remediations": 3
+  }
+}

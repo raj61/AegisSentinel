@@ -1,0 +1,242 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aegis-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: aegis-demo
+  labels:
+    app: frontend
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+      annotations:
+        aegis.sentinel/dependencies: "backend-service"
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+        env:
+        - name: BACKEND_URL
+          value: "http://backend-service:8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: aegis-demo
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: aegis-demo
+  labels:
+    app: backend
+    tier: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: application
+      annotations:
+        aegis.sentinel/dependencies: "database-service,cache-service,queue-service"
+    spec:
+      containers:
+      - name: backend
+        image: busybox
+        command: ["/bin/sh", "-c", "while true; do echo 'Backend service running'; sleep 10; done"]
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+        env:
+        - name: DATABASE_URL
+          value: "mongodb://database-service:27017/demo"
+        - name: CACHE_URL
+          value: "redis://cache-service:6379"
+        - name: QUEUE_URL
+          value: "amqp://queue-service:5672"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: aegis-demo
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  namespace: aegis-demo
+  labels:
+    app: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: database
+        image: busybox
+        command: ["/bin/sh", "-c", "while true; do echo 'Database service running'; sleep 10; done"]
+        ports:
+        - containerPort: 27017
+        resources:
+          limits:
+            cpu: "1.0"
+            memory: "1Gi"
+          requests:
+            cpu: "0.5"
+            memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+  namespace: aegis-demo
+spec:
+  selector:
+    app: database
+  ports:
+  - port: 27017
+    targetPort: 27017
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache
+  namespace: aegis-demo
+  labels:
+    app: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+      - name: cache
+        image: busybox
+        command: ["/bin/sh", "-c", "while true; do echo 'Cache service running'; sleep 10; done"]
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-service
+  namespace: aegis-demo
+spec:
+  selector:
+    app: cache
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue
+  namespace: aegis-demo
+  labels:
+    app: queue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: queue
+  template:
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+      - name: queue
+        image: busybox
+        command: ["/bin/sh", "-c", "while true; do echo 'Queue service running'; sleep 10; done"]
+        ports:
+        - containerPort: 5672
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: queue-service
+  namespace: aegis-demo
+spec:
+  selector:
+    app: queue
+  ports:
+  - port: 5672
+    targetPort: 5672
+  type: ClusterIP

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Graph Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 300px;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+        }
+        .graph-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        #graph {
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .issue {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .issue-details {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .issue-details p {
+            margin: 0.2rem 0;
+        }
+        .issue-details-toggle {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .issue-affected-resources {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+        .issue-severity-1 { border-left: 5px solid #4caf50; }
+        .issue-severity-2 { border-left: 5px solid #8bc34a; }
+        .issue-severity-3 { border-left: 5px solid #ffc107; }
+        .issue-severity-4 { border-left: 5px solid #ff9800; }
+        .issue-severity-5 { border-left: 5px solid #f44336; }
+        .issue h3 {
+            margin-top: 0;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            margin-right: 10px;
+        }
+        .status-detected { background-color: #FFC107; }
+        .status-mitigating { background-color: #2196F3; }
+        .status-mitigated { background-color: #4CAF50; }
+        .status-failed { background-color: #F44336; }
+        
+        .progress-container {
+            flex-grow: 1;
+            height: 8px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #2196F3;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .overall-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-healthy { background-color: #4CAF50; }
+        .status-warning { background-color: #FFC107; }
+        .status-critical { background-color: #F44336; }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .health-marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid white;
+            top: -5px;
+            right: -5px;
+        }
+        .health-marker.healthy {
+            background-color: #4CAF50;
+        }
+        .health-marker.warning {
+            background-color: #FFC107;
+        }
+        .health-marker.critical {
+            background-color: #F44336;
+        }
+        .health-marker.unknown {
+            background-color: #9E9E9E;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Service Graph Viewer</h1>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Issues</h2>
+            <div id="issues-container">
+                <div class="loading">Loading issues...</div>
+            </div>
+        </div>
+        <div class="graph-container">
+            <div id="graph">
+                <div class="loading">Loading service graph...</div>
+            </div>
+            <div class="controls">
+                <button id="zoom-in">+</button>
+                <button id="zoom-out">-</button>
+                <button id="reset">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch the service graph data
+        fetch('/api/graph')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch service graph');
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderGraph(data);
+            })
+            .catch(error => {
+                console.error('Error fetching service graph:', error);
+                document.querySelector('#graph').innerHTML = `
+                    <div class="loading" style="color: #f44336;">
+                        Error loading service graph: ${error.message}
+                    </div>
+                `;
+            });
+
+        // Function to refresh data
+        function refreshData() {
+            // Reload the page to refresh all data
+            window.location.reload();
+        }
+        
+        // Set up polling for real-time updates
+        let lastIssueCount = 0;
+        let lastIssueHash = '';
+        
+        function pollForUpdates() {
+            // Fetch issues
+            fetch('/api/issues')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch issues');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const issues = data.issues || [];
+                    
+                    // Create a simple hash of the issues to detect changes
+                    const issueHash = JSON.stringify(issues.map(i => `${i.type}-${i.status}-${i.mitigated_at}`));
+                    
+                    // Check if issues have changed
+                    if (issues.length !== lastIssueCount || issueHash !== lastIssueHash) {
+                        console.log('Issues updated, refreshing UI');
+                        
+                        // If there are new issues, show a notification
+                        if (issues.length > lastIssueCount) {
+                            const newIssues = issues.length - lastIssueCount;
+                            showNotification(`${newIssues} new issue${newIssues > 1 ? 's' : ''} detected!`);
+                        }
+                        
+                        // Update the UI
+                        renderIssues(issues);
+                        
+                        // If the graph is already rendered, update node colors
+                        if (window.updateNodeColors) {
+                            window.updateNodeColors();
+                        }
+                        
+                        // Update tracking variables
+                        lastIssueCount = issues.length;
+                        lastIssueHash = issueHash;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching issues:', error);
+                    document.querySelector('#issues-container').innerHTML = `
+                        <div class="loading" style="color: #f44336;">
+                            Error loading issues: ${error.message}
+                        </div>
+                    `;
+                });
+        }
+        
+        // Initial fetch
+        pollForUpdates();
+        
+        // Set up polling interval (every 5 seconds)
+        setInterval(pollForUpdates, 5000);
+        
+        // Function to show notifications
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 5000);
+        }
+
+        function renderGraph(data) {
+            // Enhanced D3.js force-directed graph implementation
+            const graphContainer = document.getElementById('graph');
+            graphContainer.innerHTML = '';
+
+            const width = graphContainer.clientWidth;
+            const height = graphContainer.clientHeight;
+
+            // Create SVG with zoom capability
+            const svg = d3.select('#graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            // Add zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            const g = svg.append('g');
+
+            // Ensure edges have proper source and target references
+            const edges = data.edges.map(edge => {
+                // Make sure we're using objects, not just IDs
+                const source = typeof edge.source === 'string' ?
+                    data.nodes.find(n => n.id === edge.source) : edge.source;
+                    
+                const target = typeof edge.target === 'string' ?
+                    data.nodes.find(n => n.id === edge.target) : edge.target;
+                
+                return {...edge, source, target};
+            }).filter(edge => edge.source && edge.target); // Filter out edges with missing nodes
+
+            // Create a simulation with stronger forces
+            const simulation = d3.forceSimulation(data.nodes)
+                .force('link', d3.forceLink(edges).id(d => d.id).distance(150))
+                .force('charge', d3.forceManyBody().strength(-500))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(30)); // Prevent node overlap
+
+            // Create arrow markers for directed edges
+            svg.append('defs').selectAll('marker')
+                .data(['end'])
+                .enter().append('marker')
+                .attr('id', d => d)
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', '#999');
+
+            // Create links with arrows
+            const link = g.append('g')
+                .selectAll('line')
+                .data(edges)
+                .enter()
+                .append('line')
+                .attr('stroke', '#999')
+                .attr('stroke-width', 2)
+                .attr('stroke-opacity', 0.6)
+                .attr('marker-end', 'url(#end)'); // Add arrow marker
+
+            // Create node groups to hold both the circle and health marker
+            const nodeGroups = g.append('g')
+                .selectAll('.node-group')
+                .data(data.nodes)
+                .enter()
+                .append('g')
+                .attr('class', 'node-group');
+                
+            // Create nodes with hover effect
+            const node = nodeGroups
+                .append('circle')
+                .attr('r', 15)
+                .attr('fill', d => getNodeColor(d))
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2)
+                .attr('class', d => `node-circle node-${d.id.replace(/[\/\.]/g, '-')}`)
+                .on('mouseover', function(event, d) {
+                    // Highlight connected nodes and links
+                    const connectedNodeIds = new Set();
+                    edges.forEach(edge => {
+                        if (edge.source.id === d.id) connectedNodeIds.add(edge.target.id);
+                        if (edge.target.id === d.id) connectedNodeIds.add(edge.source.id);
+                    });
+                    
+                    node.attr('opacity', n => n.id === d.id || connectedNodeIds.has(n.id) ? 1 : 0.3);
+                    link.attr('opacity', e => e.source.id === d.id || e.target.id === d.id ? 1 : 0.1);
+                    label.attr('opacity', n => n.id === d.id || connectedNodeIds.has(n.id) ? 1 : 0.3);
+                    healthMarkers.attr('opacity', n => n.id === d.id || connectedNodeIds.has(n.id) ? 1 : 0.3);
+                })
+                .on('mouseout', function() {
+                    // Reset highlight
+                    node.attr('opacity', 1);
+                    link.attr('opacity', 1);
+                    label.attr('opacity', 1);
+                    healthMarkers.attr('opacity', 1);
+                });
+                
+            // Add health markers
+            const healthMarkers = nodeGroups
+                .append('circle')
+                .attr('r', 5)
+                .attr('cx', 10)
+                .attr('cy', -10)
+                .attr('class', d => `health-marker health-marker-${d.id.replace(/[\/\.]/g, '-')} ${getHealthStatus(d)}`)
+                .attr('fill', d => getHealthMarkerColor(d));
+
+            // Add labels with better positioning
+            const label = g.append('g')
+                .selectAll('text')
+                .data(data.nodes)
+                .enter()
+                .append('text')
+                .text(d => d.name || d.id)
+                .attr('font-size', 12)
+                .attr('font-weight', 'bold')
+                .attr('dx', 18)
+                .attr('dy', 4)
+                .attr('text-anchor', 'start');
+
+            // Update positions on simulation tick with boundary constraints
+            simulation.on('tick', () => {
+                // Keep nodes within bounds
+                node
+                    .attr('cx', d => d.x = Math.max(20, Math.min(width - 20, d.x)))
+                    .attr('cy', d => d.y = Math.max(20, Math.min(height - 20, d.y)));
+
+                // Update link positions
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                // Update label positions
+                label
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+                    
+                // Update health marker positions
+                healthMarkers
+                    .attr('cx', d => d.x + 10)
+                    .attr('cy', d => d.y - 10);
+                    
+                // Update node group positions
+                nodeGroups
+                    .attr('transform', d => `translate(${d.x}, ${d.y})`);
+            });
+            
+            // Add drag behavior to nodes
+            node.call(d3.drag()
+                .on('start', (event, d) => {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on('drag', (event, d) => {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                })
+                .on('end', (event, d) => {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }));
+
+            // Helper function to get node color based on category and health status
+            function getNodeColor(node) {
+                // Check if this node is affected by any issues
+                const isAffectedByIssue = window.issueData && window.issueData.some(issue =>
+                    issue.affected_nodes.includes(node.id)
+                );
+                
+                // If node is affected by an issue, mark it as a bottleneck
+                if (isAffectedByIssue) {
+                    return '#FF5252'; // Red for bottleneck/problematic nodes
+                }
+                
+                // If node has a health status, use that
+                if (node.health_status === 'healthy') {
+                    return '#4CAF50'; // Green for healthy nodes
+                } else if (node.health_status === 'warning') {
+                    return '#FFC107'; // Yellow for warning nodes
+                } else if (node.health_status === 'critical') {
+                    return '#F44336'; // Red for critical nodes
+                }
+                
+                // Otherwise use category colors
+                const categoryColors = {
+                    'compute': '#4285F4',
+                    'serverless': '#0F9D58',
+                    'container': '#F4B400',
+                    'kubernetes': '#DB4437',
+                    'api': '#4285F4',
+                    'database': '#F4B400',
+                    'cache': '#9C27B0',
+                    'queue': '#FF9800',
+                    'other': '#9E9E9E'
+                };
+                return categoryColors[node.category] || categoryColors.other;
+            }
+            
+            // Helper function to get health marker color
+            function getHealthMarkerColor(node) {
+                // If node has a health status, use that
+                if (node.health_status === 'healthy') {
+                    return '#4CAF50'; // Green for healthy nodes
+                } else if (node.health_status === 'warning') {
+                    return '#FFC107'; // Yellow for warning nodes
+                } else if (node.health_status === 'critical') {
+                    return '#F44336'; // Red for critical nodes
+                }
+                
+                // Default to unknown
+                return '#9E9E9E'; // Grey for unknown health
+            }
+            
+            // Helper function to get health status class
+            function getHealthStatus(node) {
+                if (node.health_status === 'healthy') {
+                    return 'healthy';
+                } else if (node.health_status === 'warning') {
+                    return 'warning';
+                } else if (node.health_status === 'critical') {
+                    return 'critical';
+                }
+                
+                return 'unknown';
+            }
+            
+            // Function to update node colors based on issues
+            window.updateNodeColors = function() {
+                if (!window.issueData) return;
+                
+                // Update node colors based on affected nodes
+                d3.selectAll('.node-circle').each(function(d) {
+                    const isAffected = window.issueData.some(issue =>
+                        issue.affected_nodes.includes(d.id)
+                    );
+                    
+                    if (isAffected) {
+                        d3.select(this).transition().duration(500).attr('fill', '#FF5252');
+                        
+                        // Also update health marker
+                        const healthMarkerId = `.health-marker-${d.id.replace(/[\/\.]/g, '-')}`;
+                        d3.select(healthMarkerId)
+                            .transition()
+                            .duration(500)
+                            .attr('fill', '#F44336')
+                            .attr('class', function() {
+                                return this.getAttribute('class').replace(/healthy|warning|unknown/, 'critical');
+                            });
+                            
+                        // Show a notification about the affected node
+                        showNotification(`Service ${d.name || d.id} is experiencing issues`);
+                    }
+                });
+            };
+        }
+
+        function renderIssues(issues) {
+            const container = document.getElementById('issues-container');
+            
+            // Store issues globally for node coloring
+            window.issueData = issues;
+            
+            if (!issues || issues.length === 0) {
+                container.innerHTML = `
+                    <div class="overall-status">
+                        <div class="status-icon status-healthy"></div>
+                        <div>All systems operational</div>
+                    </div>
+                    <p>No issues detected.</p>
+                `;
+                return;
+            }
+            
+            // Calculate overall status
+            const criticalIssues = issues.filter(i => i.severity >= 4 && i.status !== 'mitigated').length;
+            const warningIssues = issues.filter(i => i.severity < 4 && i.severity >= 2 && i.status !== 'mitigated').length;
+            const mitigatedIssues = issues.filter(i => i.status === 'mitigated').length;
+            
+            let overallStatus = 'healthy';
+            let statusText = 'All systems operational';
+            
+            if (criticalIssues > 0) {
+                overallStatus = 'critical';
+                statusText = `${criticalIssues} critical issue${criticalIssues > 1 ? 's' : ''} detected`;
+            } else if (warningIssues > 0) {
+                overallStatus = 'warning';
+                statusText = `${warningIssues} warning issue${warningIssues > 1 ? 's' : ''} detected`;
+            } else if (mitigatedIssues > 0) {
+                statusText = `${mitigatedIssues} issue${mitigatedIssues > 1 ? 's' : ''} mitigated`;
+            }
+            
+            // Add overall status indicator
+            let html = `
+                <div class="overall-status">
+                    <div class="status-icon status-${overallStatus}"></div>
+                    <div>${statusText}</div>
+                </div>
+            `;
+            
+            // Sort issues by severity (highest first)
+            issues.sort((a, b) => b.severity - a.severity);
+            
+            issues.forEach(issue => {
+                // Format timestamps for display
+                const detectedAt = issue.detected_at ? new Date(issue.detected_at).toLocaleString() : 'N/A';
+                const mitigatedAt = issue.mitigated_at ? new Date(issue.mitigated_at).toLocaleString() : 'N/A';
+                
+                // Determine status and progress
+                let status = issue.status || 'detected';
+                let progressPercent = 0;
+                let statusClass = 'status-detected';
+                
+                if (status === 'mitigating') {
+                    statusClass = 'status-mitigating';
+                    progressPercent = 50;
+                } else if (status === 'mitigated') {
+                    statusClass = 'status-mitigated';
+                    progressPercent = 100;
+                } else if (status === 'failed') {
+                    statusClass = 'status-failed';
+                    progressPercent = 100;
+                }
+                
+                html += `
+                    <div class="issue issue-severity-${issue.severity}">
+                        <h3>${issue.type.replace(/_/g, ' ')}</h3>
+                        <p>${issue.description}</p>
+                        
+                        <div class="status-indicator">
+                            <div class="status-badge ${statusClass}">${status.toUpperCase()}</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-details">
+                            <p><strong>Severity:</strong> ${issue.severity}/5</p>
+                            <p><strong>Detected:</strong> ${detectedAt}</p>
+                            ${issue.mitigation_action ? `<p><strong>Mitigation:</strong> ${issue.mitigation_action}</p>` : ''}
+                            ${issue.mitigated_at ? `<p><strong>Mitigated:</strong> ${mitigatedAt}</p>` : ''}
+                        </div>
+                        
+                        <button class="issue-details-toggle">Show Details</button>
+                        <div class="issue-affected-resources" style="display: none;">
+                            <p><strong>Affected Nodes:</strong> ${issue.affected_nodes.join(', ') || 'None'}</p>
+                            <p><strong>Affected Edges:</strong> ${issue.affected_edges.map(e => `${e[0]} → ${e[1]}`).join(', ') || 'None'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Add event listeners for toggle buttons
+            document.querySelectorAll('.issue-details-toggle').forEach(button => {
+                button.addEventListener('click', function() {
+                    const detailsDiv = this.nextElementSibling;
+                    if (detailsDiv.style.display === 'none') {
+                        detailsDiv.style.display = 'block';
+                        this.textContent = 'Hide Details';
+                    } else {
+                        detailsDiv.style.display = 'none';
+                        this.textContent = 'Show Details';
+                    }
+                });
+            });
+            
+            // Simulate progress for issues being mitigated
+            simulateProgressForMitigatingIssues();
+        }
+        
+        // Function to simulate progress for issues being mitigated
+        function simulateProgressForMitigatingIssues() {
+            const mitigatingIssues = document.querySelectorAll('.status-badge.status-mitigating');
+            
+            mitigatingIssues.forEach((badge, index) => {
+                const progressBar = badge.nextElementSibling.querySelector('.progress-bar');
+                let progress = 0;
+                
+                // Simulate different progress for each issue
+                const interval = setInterval(() => {
+                    progress += 1;
+                    progressBar.style.width = `${Math.min(progress, 95)}%`;
+                    
+                    // Randomly complete some issues
+                    if (progress > 80 && Math.random() > 0.8) {
+                        clearInterval(interval);
+                        badge.textContent = 'MITIGATED';
+                        badge.classList.remove('status-mitigating');
+                        badge.classList.add('status-mitigated');
+                        progressBar.style.width = '100%';
+                        progressBar.style.backgroundColor = '#4CAF50';
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 200 + (index * 100)); // Stagger the updates
+            });
+        }
+
+        // Zoom controls
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 1.3);
+        });
+        
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 0.7);
+        });
+        
+        document.getElementById('reset').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Sentinel - Advanced SRE Platform</title>
+    <!-- Modern UI Framework - Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- D3.js for graph visualization -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Chart.js for metrics visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- vis.js for ML graph visualization -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <!-- Inter font -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/frontend/src/styles.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter var', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="light-mode">
+    <div id="root"></div>
+    
+    <!-- Component scripts -->
+    <script type="text/babel" src="/frontend/src/components/Header.js"></script>
+    <script type="text/babel" src="/frontend/src/components/ServiceGraph.js"></script>
+    <script type="text/babel" src="/frontend/src/components/MetricsPanel.js"></script>
+    <script type="text/babel" src="/frontend/src/components/IssuesPanel.js"></script>
+    <script type="text/babel" src="/frontend/src/components/MLStatusPanel.js"></script>
+    <script type="text/babel" src="/frontend/src/components/Notifications.js"></script>
+    <script type="text/babel" src="/frontend/src/components/MLGraphPanel.js"></script>
+    
+    <!-- Main app -->
+    <script type="text/babel" src="/frontend/src/app.js"></script>
+</body>
+</html>

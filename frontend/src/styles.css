@@ -1,0 +1,251 @@
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 300px;
+    font-size: 0.875rem;
+}
+
+.dark-mode .tooltip {
+    background-color: #374151;
+    color: white;
+    border-color: #4b5563;
+}
+
+/* Health status indicators */
+.health-healthy {
+    fill: #10B981;
+}
+
+.health-warning {
+    fill: #F59E0B;
+}
+
+.health-critical {
+    fill: #EF4444;
+}
+
+.health-unknown {
+    fill: #6B7280;
+}
+/* Aegis Sentinel - Modern UI Styles */
+
+body {
+    font-family: 'Inter var', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.dark-mode {
+    background-color: #111827;
+    color: #f9fafb;
+}
+
+.light-mode {
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+/* Graph styles */
+.node-circle {
+    transition: all 0.3s ease;
+}
+
+.node-circle:hover {
+    filter: brightness(1.2);
+}
+
+.link {
+    transition: all 0.3s ease;
+}
+
+.health-marker {
+    transition: all 0.3s ease;
+}
+
+/* Animation effects */
+.fade-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode scrollbar */
+.dark-mode ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Graph container */
+.graph-container {
+    position: relative;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.dark-mode .graph-container {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Tooltip - already defined above, removing duplicate */
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-width: 350px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Card hover effect */
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Health status colors - already defined as fill colors above, adding background versions with different class names */
+.health-status-healthy {
+    background-color: #10B981;
+}
+
+.health-status-warning {
+    background-color: #F59E0B;
+}
+
+.health-status-critical {
+    background-color: #EF4444;
+}
+
+.health-status-unknown {
+    background-color: #6B7280;
+}
+
+/* ML status badges */
+.ml-status-active {
+    background-color: #10B981;
+    color: white;
+}
+
+.ml-status-training {
+    background-color: #F59E0B;
+    color: white;
+}
+
+.ml-status-error {
+    background-color: #EF4444;
+    color: white;
+}
+
+/* Issue cards */
+.issue-card {
+    transition: all 0.3s ease;
+}
+
+.issue-card:hover {
+    transform: translateY(-2px);
+}
+
+.issue-severity-1 { border-left: 4px solid #10B981; }
+.issue-severity-2 { border-left: 4px solid #34D399; }
+.issue-severity-3 { border-left: 4px solid #F59E0B; }
+.issue-severity-4 { border-left: 4px solid #F97316; }
+.issue-severity-5 { border-left: 4px solid #EF4444; }

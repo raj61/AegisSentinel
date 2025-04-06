@@ -1,0 +1,28 @@
+{
+  "q_table": {
+    "cpu_spike_critical": {
+      "Scale Service": 0.8,
+      "Restart Service": 0.4,
+      "Rollback Deployment": 0.2,
+      "Drain Node": 0.1,
+      "Clear Cache": 0.0
+    },
+    "memory_leak_critical": {
+      "Scale Service": 0.3,
+      "Restart Service": 0.9,
+      "Rollback Deployment": 0.4,
+      "Drain Node": 0.2,
+      "Clear Cache": 0.5
+    },
+    "error_spike_critical": {
+      "Scale Service": 0.2,
+      "Restart Service": 0.5,
+      "Rollback Deployment": 0.9,
+      "Drain Node": 0.1,
+      "Clear Cache": 0.0
+    }
+  },
+  "learning_rate": 0.1,
+  "discount_factor": 0.9,
+  "exploration_rate": 0.1
+}

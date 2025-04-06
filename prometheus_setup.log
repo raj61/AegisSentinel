@@ -1,0 +1,35 @@
+2025-04-05 20:14:00,543 - __main__ - INFO - Created prometheus.yaml
+2025-04-05 20:14:00,544 - __main__ - INFO - Running command: kubectl apply -f prometheus.yaml
+2025-04-05 20:14:00,950 - __main__ - INFO - namespace/monitoring created
+configmap/prometheus-config created
+serviceaccount/prometheus created
+clusterrole.rbac.authorization.k8s.io/prometheus created
+clusterrolebinding.rbac.authorization.k8s.io/prometheus created
+deployment.apps/prometheus created
+service/prometheus created
+
+2025-04-05 20:14:00,951 - __main__ - INFO - Prometheus deployed to namespace monitoring
+2025-04-05 20:14:00,951 - __main__ - INFO - Waiting for Prometheus to be ready...
+2025-04-05 20:14:10,955 - __main__ - INFO - Running command: kubectl get deployments -n monitoring
+2025-04-05 20:14:11,071 - __main__ - INFO - NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+prometheus   0/1     1            0           11s
+
+2025-04-05 20:14:11,071 - __main__ - INFO - Running command: kubectl get services -n monitoring
+2025-04-05 20:14:11,111 - __main__ - INFO - NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+prometheus   ClusterIP   10.111.34.9   <none>        9090/TCP   11s
+
+2025-04-05 20:14:11,111 - __main__ - INFO - Setting up port forwarding for Prometheus...
+2025-04-05 20:14:11,113 - __main__ - INFO - Prometheus is now available at http://localhost:9090
+2025-04-05 20:14:11,113 - __main__ - INFO - Press Ctrl+C to stop port forwarding
+2025-04-05 20:18:59,963 - __main__ - INFO - Port forwarding interrupted by user
+2025-04-05 20:18:59,964 - __main__ - INFO - 
+================================================================================
+2025-04-05 20:18:59,964 - __main__ - INFO - Prometheus setup complete!
+2025-04-05 20:18:59,964 - __main__ - INFO - ================================================================================
+2025-04-05 20:18:59,964 - __main__ - INFO - 
+To access Prometheus:
+2025-04-05 20:18:59,965 - __main__ - INFO - kubectl port-forward service/prometheus 9090:9090 -n monitoring
+2025-04-05 20:18:59,965 - __main__ - INFO - 
+To run the demo with Prometheus metrics:
+2025-04-05 20:18:59,965 - __main__ - INFO - python3 run_k8s_demo.py --use-real-k8s --namespace aegis-demo --enable-metrics --prometheus-url http://localhost:9090
+2025-04-05 20:18:59,965 - __main__ - INFO - ================================================================================

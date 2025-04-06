@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Sentinel - Service Graph Analysis</title>
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.min.js"></script>
+    <!-- D3.js for graph visualization -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Chart.js for metrics visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [v-cloak] { display: none; }
+        
+        .node-circle {
+            transition: fill 0.3s ease, stroke-width 0.3s ease;
+        }
+        
+        .node-circle:hover {
+            stroke-width: 3px;
+        }
+        
+        .link {
+            transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease;
+        }
+        
+        .health-marker {
+            transition: fill 0.3s ease;
+        }
+        
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s;
+        }
+        
+        .fade-enter-from, .fade-leave-to {
+            opacity: 0;
+        }
+        
+        .slide-fade-enter-active {
+            transition: all 0.3s ease-out;
+        }
+        
+        .slide-fade-leave-active {
+            transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+        
+        .slide-fade-enter-from,
+        .slide-fade-leave-to {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <div id="app" v-cloak>
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V3zm1 0v14h12V3H4z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M6 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H7a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <div>
+                        <h1 class="text-2xl font-bold">Aegis Sentinel</h1>
+                        <p class="text-sm text-blue-100">Service Graph Analysis & Remediation</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-white bg-opacity-20 rounded-full px-3 py-1">
+                        <span class="inline-block w-3 h-3 rounded-full" :class="{
+                            'bg-green-400': overallStatus === 'healthy',
+                            'bg-yellow-400': overallStatus === 'warning',
+                            'bg-red-500': overallStatus === 'critical',
+                            'animate-pulse': overallStatus !== 'healthy'
+                        }"></span>
+                        <span class="text-sm font-medium">{{ statusMessage }}</span>
+                    </div>
+                    <button @click="refreshData" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column: Service Graph -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                            <h2 class="text-lg font-semibold">Service Graph</h2>
+                            <div class="flex space-x-2">
+                                <button @click="zoomIn" class="bg-gray-200 hover:bg-gray-300 rounded p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button @click="zoomOut" class="bg-gray-200 hover:bg-gray-300 rounded p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button @click="resetZoom" class="bg-gray-200 hover:bg-gray-300 rounded p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="relative" style="height: 500px;">
+                            <div v-if="loading.graph" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10">
+                                <div class="flex flex-col items-center">
+                                    <svg class="animate-spin h-10 w-10 text-blue-600 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <p class="text-gray-600">Loading service graph...</p>
+                                </div>
+                            </div>
+                            <div id="graph" class="w-full h-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Health Metrics -->
+                    <div class="mt-6 bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b">
+                            <h2 class="text-lg font-semibold">Health Metrics</h2>
+                        </div>
+                        <div class="p-4">
+                            <div v-if="loading.metrics" class="flex justify-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <svg class="animate-spin h-8 w-8 text-blue-600 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <p class="text-gray-600">Loading metrics...</p>
+                                </div>
+                            </div>
+                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 mb-2">CPU Utilization</h3>
+                                    <canvas id="cpuChart" height="200"></canvas>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 mb-2">Memory Usage</h3>
+                                    <canvas id="memoryChart" height="200"></canvas>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 mb-2">Response Time</h3>
+                                    <canvas id="latencyChart" height="200"></canvas>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 mb-2">Error Rate</h3>
+                                    <canvas id="errorChart" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Issues and Alerts -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b">
+                            <h2 class="text-lg font-semibold">Issues & Alerts</h2>
+                        </div>
+                        <div class="p-4">
+                            <div v-if="loading.issues" class="flex justify-center py-8">
+                                <div class="flex flex-col items-center">
+                                    <svg class="animate-spin h-8 w-8 text-blue-600 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <p class="text-gray-600">Loading issues...</p>
+                                </div>
+                            </div>
+                            <div v-else-if="issues.length === 0" class="text-center py-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-green-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-gray-600">No issues detected</p>
+                                <p class="text-sm text-gray-500 mt-1">All systems are operating normally</p>
+                            </div>
+                            <div v-else class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                                <div v-for="issue in issues" :key="issue.id" class="border-l-4 rounded-r-lg shadow-sm p-4" :class="{
+                                    'border-red-500 bg-red-50': issue.severity >= 4,
+                                    'border-yellow-500 bg-yellow-50': issue.severity >= 2 && issue.severity < 4,
+                                    'border-blue-500 bg-blue-50': issue.severity < 2,
+                                    'pulse': issue.status === 'detected' && issue.severity >= 4
+                                }">
+                                    <div class="flex justify-between items-start">
+                                        <h3 class="font-medium" :class="{
+                                            'text-red-700': issue.severity >= 4,
+                                            'text-yellow-700': issue.severity >= 2 && issue.severity < 4,
+                                            'text-blue-700': issue.severity < 2
+                                        }">{{ formatIssueType(issue.type) }}</h3>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                                            'bg-red-100 text-red-800': issue.severity >= 4,
+                                            'bg-yellow-100 text-yellow-800': issue.severity >= 2 && issue.severity < 4,
+                                            'bg-blue-100 text-blue-800': issue.severity < 2
+                                        }">
+                                            Severity {{ issue.severity }}/5
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mt-1">{{ issue.description }}</p>
+                                    
+                                    <div class="mt-3 flex items-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                                            'bg-red-100 text-red-800': issue.status === 'detected',
+                                            'bg-yellow-100 text-yellow-800': issue.status === 'mitigating',
+                                            'bg-green-100 text-green-800': issue.status === 'mitigated',
+                                            'bg-gray-100 text-gray-800': issue.status === 'failed'
+                                        }">
+                                            {{ issue.status.toUpperCase() }}
+                                        </span>
+                                        <div v-if="issue.status === 'mitigating'" class="ml-2 flex-grow bg-gray-200 rounded-full h-2">
+                                            <div class="bg-yellow-500 h-2 rounded-full" :style="{ width: issue.progress + '%' }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ML Status -->
+                    <div class="mt-6 bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b">
+                            <h2 class="text-lg font-semibold">ML System Status</h2>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Anomaly Detection</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                                        'bg-green-100 text-green-800': mlStatus.anomalyDetection === 'active',
+                                        'bg-yellow-100 text-yellow-800': mlStatus.anomalyDetection === 'training',
+                                        'bg-red-100 text-red-800': mlStatus.anomalyDetection === 'error'
+                                    }">
+                                        {{ mlStatus.anomalyDetection.toUpperCase() }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Root Cause Analysis</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                                        'bg-green-100 text-green-800': mlStatus.rootCauseAnalysis === 'active',
+                                        'bg-yellow-100 text-yellow-800': mlStatus.rootCauseAnalysis === 'training',
+                                        'bg-red-100 text-red-800': mlStatus.rootCauseAnalysis === 'error'
+                                    }">
+                                        {{ mlStatus.rootCauseAnalysis.toUpperCase() }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium">Remediation Learning</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                                        'bg-green-100 text-green-800': mlStatus.remediationLearning === 'active',
+                                        'bg-yellow-100 text-yellow-800': mlStatus.remediationLearning === 'training',
+                                        'bg-red-100 text-red-800': mlStatus.remediationLearning === 'error'
+                                    }">
+                                        {{ mlStatus.remediationLearning.toUpperCase() }}
+                                    </span>
+                                </div>
+                                
+                                <div v-if="hasMLErrors" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                                    <div class="flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-red-800">ML System Warnings</p>
+                                            <ul class="mt-1 text-xs text-red-700 list-disc list-inside">
+                                                <li v-for="(error, index) in mlErrors" :key="index">{{ error }}</li>
+                                            </ul>
+                                            <button @click="trainModels" class="mt-2 text-xs bg-red-100 hover:bg-red-200 text-red-800 font-medium py-1 px-2 rounded transition-colors">
+                                                Train Models
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create Vue app
+        const app = Vue.createApp({
+            data() {
+                return {
+                    loading: {
+                        graph: true,
+                        issues: true,
+                        metrics: true
+                    },
+                    issues: [],
+                    overallStatus: 'healthy',
+                    statusMessage: 'All systems operational',
+                    mlStatus: {
+                        anomalyDetection: 'error',
+                        rootCauseAnalysis: 'active',
+                        remediationLearning: 'error',
+                        predictionEngine: 'active'
+                    },
+                    mlErrors: [
+                        'Error in detector metrics: Model must be trained before detection',
+                        'Error in detector logs: Model must be trained before detection'
+                    ],
+                    notifications: [],
+                    charts: {},
+                    simulation: null,
+                    zoom: null
+                };
+            },
+            computed: {
+                hasMLErrors() {
+                    return this.mlErrors.length > 0;
+                }
+            },
+            methods: {
+                async fetchGraph() {
+                    this.loading.graph = true;
+                    try {
+                        const response = await fetch('/api/graph');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch graph data');
+                        }
+                        const data = await response.json();
+                        this.renderGraph(data);
+                    } catch (error) {
+                        this.showNotification('Error loading graph: ' + error.message, 'error');
+                        console.error('Error fetching graph:', error);
+                    } finally {
+                        this.loading.graph = false;
+                    }
+                },
+                
+                async fetchIssues() {
+                    this.loading.issues = true;
+                    try {
+                        const response = await fetch('/api/issues');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch issues');
+                        }
+                        const data = await response.json();
+                        this.issues = (data.issues || []).map(issue => ({
+                            ...issue,
+                            showDetails: false,
+                            progress: issue.status === 'mitigating' ? Math.floor(Math.random() * 80) + 10 : 0,
+                            id: issue.type + '-' + (issue.detected_at || Date.now())
+                        }));
+                        
+                        // Update overall status
+                        this.updateOverallStatus();
+                        
+                        // Update node colors in graph
+                        this.updateNodeColors();
+                    } catch (error) {
+                        this.showNotification('Error loading issues: ' + error.message, 'error');
+                        console.error('Error fetching issues:', error);
+                    } finally {
+                        this.loading.issues = false;
+                    }
+                },
+                
+                initMetricsCharts() {
+                    this.loading.metrics = true;
+                    
+                    // Generate some sample data
+                    const timeLabels = Array.from({length: 24}, (_, i) => `${i}:00`);
+                    
+                    // CPU Chart
+                    const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+                    this.charts.cpu = new Chart(cpuCtx, {
+                        type: 'line',
+                        data: {
+                            labels: timeLabels,
+                            datasets: [
+                                {
+                                    label: 'Frontend',
+                                    data: this.generateRandomData(24, 20, 60),
+                                    borderColor: 'rgba(59, 130, 246, 0.8)',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Backend',
+                                    data: this.generateRandomData(24, 30, 90),
+                                    borderColor: 'rgba(16, 185, 129, 0.8)',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Database',
+                                    data: this.generateRandomData(24, 40, 95),
+                                    borderColor: 'rgba(245, 158, 11, 0.8)',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                                    tension: 0.4
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: 'CPU %'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    
+                    // Memory Chart
+                    const memoryCtx = document.getElementById('memoryChart').getContext('2d');
+                    this.charts.memory = new Chart(memoryCtx, {
+                        type: 'line',
+                        data: {
+                            labels: timeLabels,
+                            datasets: [
+                                {
+                                    label: 'Frontend',
+                                    data: this.generateRandomData(24, 30, 70),
+                                    borderColor: 'rgba(59, 130, 246, 0.8)',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Backend',
+                                    data: this.generateRandomData(24, 40, 80),
+                                    borderColor: 'rgba(16, 185, 129, 0.8)',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Database',
+                                    data: this.generateRandomData(24, 50, 90),
+                                    borderColor: 'rgba(245, 158, 11, 0.8)',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                                    tension: 0.4
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: 'Memory %'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    
+                    // Latency Chart
+                    const latencyCtx = document.getElementById('latencyChart').getContext('2d');
+                    this.charts.latency = new Chart(latencyCtx, {
+                        type: 'line',
+                        data: {
+                            labels: timeLabels,

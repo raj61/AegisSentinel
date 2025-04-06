@@ -1,0 +1,155 @@
+2025-04-05 20:00:11,678 - __main__ - ERROR - Missing dependencies: helm
+2025-04-05 20:00:11,678 - __main__ - INFO - Please install the missing dependencies and try again.
+2025-04-05 20:00:11,678 - __main__ - INFO -   - kubectl: https://kubernetes.io/docs/tasks/tools/
+2025-04-05 20:00:11,678 - __main__ - INFO -   - minikube: https://minikube.sigs.k8s.io/docs/start/
+2025-04-05 20:00:11,678 - __main__ - INFO -   - helm: https://helm.sh/docs/intro/install/
+2025-04-05 20:00:46,442 - __main__ - INFO - Starting minikube cluster...
+2025-04-05 20:00:46,714 - __main__ - INFO - Minikube is already running
+2025-04-05 20:00:46,714 - __main__ - INFO - Deploying sample microservices...
+2025-04-05 20:00:46,714 - __main__ - INFO - Running command: kubectl create namespace aegis-demo
+2025-04-05 20:00:46,767 - __main__ - WARNING - Error from server (AlreadyExists): namespaces "aegis-demo" already exists
+
+2025-04-05 20:00:46,767 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:00:46,768 - __main__ - INFO - Running command: kubectl apply -f demo-microservices.yaml
+2025-04-05 20:00:47,346 - __main__ - INFO - namespace/aegis-demo unchanged
+deployment.apps/frontend configured
+service/frontend-service unchanged
+deployment.apps/backend configured
+service/backend-service unchanged
+deployment.apps/database configured
+service/database-service unchanged
+deployment.apps/cache configured
+service/cache-service unchanged
+
+2025-04-05 20:00:47,346 - __main__ - INFO - Waiting for deployments to be ready...
+2025-04-05 20:00:57,347 - __main__ - INFO - Running command: kubectl get deployments -n aegis-demo
+2025-04-05 20:00:57,559 - __main__ - INFO - NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+backend    2/2     1            2           7h14m
+cache      1/1     1            1           7h14m
+database   1/1     1            1           7h14m
+frontend   1/1     1            1           7h14m
+queue      1/1     1            1           7h14m
+
+2025-04-05 20:00:57,560 - __main__ - INFO - Running command: kubectl get services -n aegis-demo
+2025-04-05 20:00:57,602 - __main__ - INFO - NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE
+backend-service    ClusterIP   10.97.161.177   <none>        8080/TCP    7h14m
+cache-service      ClusterIP   10.97.229.97    <none>        6379/TCP    7h14m
+database-service   ClusterIP   10.100.197.58   <none>        27017/TCP   7h14m
+frontend-service   ClusterIP   10.101.89.73    <none>        80/TCP      7h14m
+queue-service      ClusterIP   10.96.213.35    <none>        5672/TCP    7h14m
+
+2025-04-05 20:00:57,602 - __main__ - INFO - Setting up Prometheus monitoring...
+2025-04-05 20:00:57,602 - __main__ - INFO - Running command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+2025-04-05 20:00:57,624 - __main__ - WARNING - Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/bin/helm", line 24, in <module>
+    import glib
+ModuleNotFoundError: No module named 'glib'
+
+2025-04-05 20:00:57,624 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:00:57,624 - __main__ - INFO - Running command: helm repo update
+2025-04-05 20:00:57,644 - __main__ - WARNING - Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/bin/helm", line 24, in <module>
+    import glib
+ModuleNotFoundError: No module named 'glib'
+
+2025-04-05 20:00:57,644 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:00:57,644 - __main__ - INFO - Running command: helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+2025-04-05 20:00:57,664 - __main__ - WARNING - Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/bin/helm", line 24, in <module>
+    import glib
+ModuleNotFoundError: No module named 'glib'
+
+2025-04-05 20:00:57,664 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:00:57,664 - __main__ - ERROR - Failed to set up Prometheus
+2025-04-05 20:13:14,252 - __main__ - INFO - Starting minikube cluster...
+2025-04-05 20:13:14,501 - __main__ - INFO - Minikube is already running
+2025-04-05 20:13:14,501 - __main__ - INFO - Deploying sample microservices...
+2025-04-05 20:13:14,501 - __main__ - INFO - Running command: kubectl create namespace aegis-demo
+2025-04-05 20:13:14,556 - __main__ - WARNING - Error from server (AlreadyExists): namespaces "aegis-demo" already exists
+
+2025-04-05 20:13:14,556 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:13:14,557 - __main__ - INFO - Running command: kubectl apply -f demo-microservices.yaml
+2025-04-05 20:13:15,042 - __main__ - INFO - namespace/aegis-demo unchanged
+deployment.apps/frontend unchanged
+service/frontend-service unchanged
+deployment.apps/backend unchanged
+service/backend-service unchanged
+deployment.apps/database unchanged
+service/database-service unchanged
+deployment.apps/cache unchanged
+service/cache-service unchanged
+
+2025-04-05 20:13:15,043 - __main__ - INFO - Waiting for deployments to be ready...
+2025-04-05 20:13:25,048 - __main__ - INFO - Running command: kubectl get deployments -n aegis-demo
+2025-04-05 20:13:25,166 - __main__ - INFO - NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+backend    2/2     2            2           7h27m
+cache      1/1     1            1           7h27m
+database   1/1     1            1           7h27m
+frontend   1/1     1            1           7h27m
+queue      1/1     1            1           7h27m
+
+2025-04-05 20:13:25,166 - __main__ - INFO - Running command: kubectl get services -n aegis-demo
+2025-04-05 20:13:25,214 - __main__ - INFO - NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE
+backend-service    ClusterIP   10.97.161.177   <none>        8080/TCP    7h27m
+cache-service      ClusterIP   10.97.229.97    <none>        6379/TCP    7h27m
+database-service   ClusterIP   10.100.197.58   <none>        27017/TCP   7h27m
+frontend-service   ClusterIP   10.101.89.73    <none>        80/TCP      7h27m
+queue-service      ClusterIP   10.96.213.35    <none>        5672/TCP    7h27m
+
+2025-04-05 20:13:25,214 - __main__ - INFO - Setting up Prometheus monitoring...
+2025-04-05 20:13:25,241 - __main__ - ERROR - Helm is not working properly: Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/bin/helm", line 24, in <module>
+    import glib
+ModuleNotFoundError: No module named 'glib'
+
+2025-04-05 20:13:25,241 - __main__ - INFO - Skipping Prometheus setup. You can run the demo without metrics.
+2025-04-05 20:13:25,241 - __main__ - INFO - To fix Helm, try reinstalling it following the instructions at: https://helm.sh/docs/intro/install/
+2025-04-05 20:13:25,241 - __main__ - INFO - 
+Alternatively, you can run the demo without metrics:
+2025-04-05 20:13:25,241 - __main__ - INFO - python3 run_k8s_demo.py --use-real-k8s --namespace aegis-demo
+2025-04-05 20:13:25,241 - __main__ - ERROR - Failed to set up Prometheus
+2025-04-05 20:13:37,072 - __main__ - INFO - Starting minikube cluster...
+2025-04-05 20:13:37,295 - __main__ - INFO - Minikube is already running
+2025-04-05 20:13:37,295 - __main__ - INFO - Deploying sample microservices...
+2025-04-05 20:13:37,295 - __main__ - INFO - Running command: kubectl create namespace aegis-demo
+2025-04-05 20:13:37,350 - __main__ - WARNING - Error from server (AlreadyExists): namespaces "aegis-demo" already exists
+
+2025-04-05 20:13:37,350 - __main__ - ERROR - Command failed with return code 1
+2025-04-05 20:13:37,350 - __main__ - INFO - Running command: kubectl apply -f demo-microservices.yaml
+2025-04-05 20:13:37,833 - __main__ - INFO - namespace/aegis-demo unchanged
+deployment.apps/frontend unchanged
+service/frontend-service unchanged
+deployment.apps/backend unchanged
+service/backend-service unchanged
+deployment.apps/database unchanged
+service/database-service unchanged
+deployment.apps/cache unchanged
+service/cache-service unchanged
+
+2025-04-05 20:13:37,833 - __main__ - INFO - Waiting for deployments to be ready...
+2025-04-05 20:13:47,841 - __main__ - INFO - Running command: kubectl get deployments -n aegis-demo
+2025-04-05 20:13:48,059 - __main__ - INFO - NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+backend    2/2     2            2           7h27m
+cache      1/1     1            1           7h27m
+database   1/1     1            1           7h27m
+frontend   1/1     1            1           7h27m
+queue      1/1     1            1           7h27m
+
+2025-04-05 20:13:48,059 - __main__ - INFO - Running command: kubectl get services -n aegis-demo
+2025-04-05 20:13:48,101 - __main__ - INFO - NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)     AGE
+backend-service    ClusterIP   10.97.161.177   <none>        8080/TCP    7h27m
+cache-service      ClusterIP   10.97.229.97    <none>        6379/TCP    7h27m
+database-service   ClusterIP   10.100.197.58   <none>        27017/TCP   7h27m
+frontend-service   ClusterIP   10.101.89.73    <none>        80/TCP      7h27m
+queue-service      ClusterIP   10.96.213.35    <none>        5672/TCP    7h27m
+
+2025-04-05 20:13:48,101 - __main__ - INFO - 
+================================================================================
+2025-04-05 20:13:48,101 - __main__ - INFO - Demo setup complete!
+2025-04-05 20:13:48,101 - __main__ - INFO - ================================================================================
+2025-04-05 20:13:48,101 - __main__ - INFO - 
+To run the demo with real Kubernetes services:
+2025-04-05 20:13:48,101 - __main__ - INFO - python3 run_k8s_demo.py --use-real-k8s --namespace aegis-demo --enable-metrics --prometheus-url http://localhost:9090
+2025-04-05 20:13:48,101 - __main__ - INFO - 
+This will connect to your Kubernetes cluster and monitor the deployed services.
+2025-04-05 20:13:48,101 - __main__ - INFO - ================================================================================

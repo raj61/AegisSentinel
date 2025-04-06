@@ -1,0 +1,301 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aegis-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: aegis-demo
+  labels:
+    app: frontend
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+      annotations:
+        aegis.sentinel/dependencies: "backend-service"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9113"
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "http://backend-service:8080"
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+      - name: nginx-exporter
+        image: nginx/nginx-prometheus-exporter:0.10.0
+        args:
+        - -nginx.scrape-uri=http://localhost:80/stub_status
+        ports:
+        - containerPort: 9113
+          name: metrics
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: aegis-demo
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        location /stub_status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            deny all;
+        }
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: aegis-demo
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9113"
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  - port: 9113
+    targetPort: 9113
+    name: metrics
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: aegis-demo
+  labels:
+    app: backend
+    tier: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: application
+      annotations:
+        aegis.sentinel/dependencies: "database-service,cache-service"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - name: backend
+        image: python:3.9-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          pip install prometheus-client flask
+          cat > app.py << 'EOF'
+          import time
+          import random
+          from flask import Flask, Response
+          from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+
+          app = Flask(__name__)
+
+          # Create metrics
+          REQUEST_COUNT = Counter('backend_requests_total', 'Total number of requests to the backend')
+          REQUEST_LATENCY = Histogram('backend_request_latency_seconds', 'Request latency in seconds')
+          ERROR_COUNT = Counter('backend_errors_total', 'Total number of errors')
+
+          @app.route('/')
+          def home():
+              REQUEST_COUNT.inc()
+              start = time.time()
+              
+              # Simulate some work
+              time.sleep(random.uniform(0.01, 0.2))
+              
+              # Simulate occasional errors
+              if random.random() < 0.05:
+                  ERROR_COUNT.inc()
+                  response = "Error processing request", 500
+              else:
+                  response = "Backend service running", 200
+              
+              # Record latency
+              REQUEST_LATENCY.observe(time.time() - start)
+              return response
+
+          @app.route('/metrics')
+          def metrics():
+              return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+
+          if __name__ == '__main__':
+              app.run(host='0.0.0.0', port=8000)
+          EOF
+          python app.py
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: DATABASE_URL
+          value: "mongodb://database-service:27017/demo"
+        - name: CACHE_URL
+          value: "redis://cache-service:6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: aegis-demo
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8080
+    targetPort: 8000
+    name: http
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  namespace: aegis-demo
+  labels:
+    app: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9216"
+    spec:
+      containers:
+      - name: database
+        image: mongo:4.4
+        ports:
+        - containerPort: 27017
+          name: mongodb
+      - name: mongodb-exporter
+        image: bitnami/mongodb-exporter:0.30.0
+        ports:
+        - containerPort: 9216
+          name: metrics
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://localhost:27017"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+  namespace: aegis-demo
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9216"
+spec:
+  selector:
+    app: database
+  ports:
+  - port: 27017
+    targetPort: 27017
+    name: mongodb
+  - port: 9216
+    targetPort: 9216
+    name: metrics
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache
+  namespace: aegis-demo
+  labels:
+    app: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+    spec:
+      containers:
+      - name: cache
+        image: redis:6-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+      - name: redis-exporter
+        image: oliver006/redis_exporter:v1.43.0
+        ports:
+        - containerPort: 9121
+          name: metrics
+        env:
+        - name: REDIS_ADDR
+          value: "redis://localhost:6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-service
+  namespace: aegis-demo
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9121"
+spec:
+  selector:
+    app: cache
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  - port: 9121
+    targetPort: 9121
+    name: metrics
+  type: ClusterIP
