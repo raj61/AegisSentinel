@@ -60,40 +60,12 @@ const App = () => {
     const fetchGraph = async () => {
         setLoading(prev => ({ ...prev, graph: true }));
         try {
-            console.log('Fetching graph data...');
             const response = await fetch('/api/graph');
             if (!response.ok) {
-                throw new Error(`Failed to fetch graph data: ${response.status} ${response.statusText}`);
+                throw new Error('Failed to fetch graph data');
             }
             const data = await response.json();
-            console.log('Graph data received:', data);
-            
-            // Validate the data structure
-            if (!data.nodes || !data.edges) {
-                console.warn('Invalid graph data structure:', data);
-                throw new Error('Invalid graph data structure received from server');
-            }
-            
-            // Ensure all nodes have required properties
-            const processedData = {
-                nodes: data.nodes.map(node => ({
-                    id: node.id || `node-${Math.random().toString(36).substr(2, 9)}`,
-                    name: node.name || node.id || 'Unnamed Service',
-                    category: node.category || 'other',
-                    kind: node.kind || 'Service',
-                    health_status: node.health_status || 'unknown',
-                    ...node
-                })),
-                edges: data.edges.map(edge => ({
-                    source: edge.source,
-                    target: edge.target,
-                    type: edge.type || 'dependency',
-                    ...edge
-                }))
-            };
-            
-            console.log('Processed graph data:', processedData);
-            setServiceGraph(processedData);
+            setServiceGraph(data);
         } catch (error) {
             console.error('Error fetching graph:', error);
             showNotification('Error loading graph: ' + error.message, 'error');

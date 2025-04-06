@@ -188,27 +188,9 @@ def main():
         logger.info(f"Copied microservices-demo.yaml to {k8s_yaml_path}")
         
         # Parse the YAML file
-        try:
-            from src.parsers.kubernetes_parser import KubernetesParser
-            parser = KubernetesParser()
-            parser.parse(k8s_yaml_path, service_graph)
-            logger.info(f"Parsed demo Kubernetes resources from YAML file")
-            
-            # Verify that nodes were created
-            node_count = service_graph.node_count()
-            edge_count = service_graph.edge_count()
-            logger.info(f"Created service graph with {node_count} nodes and {edge_count} edges")
-            
-            if node_count == 0:
-                logger.warning("No nodes were created in the service graph. Check the YAML file and parser.")
-                # Try to read the YAML file to verify its contents
-                with open(k8s_yaml_path, 'r') as f:
-                    yaml_content = f.read()
-                    logger.info(f"YAML file content length: {len(yaml_content)} bytes")
-        except Exception as e:
-            logger.error(f"Error parsing Kubernetes YAML: {e}")
-            import traceback
-            logger.error(traceback.format_exc())
+        parser = get_parser('kubernetes', temp_dir)
+        parser.parse(k8s_yaml_path, service_graph)
+        logger.info(f"Parsed demo Kubernetes resources from YAML file")
     
     # Infer relationships between services using traditional methods
     service_graph.infer_relationships()

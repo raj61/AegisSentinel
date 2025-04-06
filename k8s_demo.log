@@ -4117,3 +4117,33 @@
 2025-04-06 11:21:20,959 - src.metrics.metrics_integration.MetricsIntegration - INFO - Stopped metrics monitoring thread
 2025-04-06 11:21:20,959 - __main__ - INFO - Stopped metrics monitoring
 2025-04-06 11:21:20,959 - __main__ - INFO - Server stopped
+2025-04-06 11:36:41,124 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 11:36:41,186 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmphfdqutv0/k8s-resources.yaml
+2025-04-06 11:36:41,193 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 11:36:41,193 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 11:36:41,193 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 11:36:41,193 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 11:36:41,193 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 11:36:41,329 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 11:38:35,417 - __main__ - INFO - Server interrupted by user
+2025-04-06 11:38:35,418 - __main__ - INFO - Server stopped
+2025-04-06 11:38:38,550 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 11:38:38,606 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmp2y17yvfb/k8s-resources.yaml
+2025-04-06 11:38:38,612 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 11:38:38,612 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 11:38:38,612 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 11:38:38,613 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 11:38:38,613 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 11:38:39,113 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 11:41:54,975 - __main__ - INFO - Server interrupted by user
+2025-04-06 11:41:54,975 - __main__ - INFO - Server stopped
+2025-04-06 11:41:57,085 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 11:41:57,142 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmp1ho7rwav/k8s-resources.yaml
+2025-04-06 11:41:57,149 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 11:41:57,150 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 11:41:57,150 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 11:41:57,150 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 11:41:57,150 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 11:41:57,283 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 11:42:07,510 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue-service attribute health_status to critical
+2025-04-06 11:42:07,511 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406114207 affecting service aegis-demo/queue-service

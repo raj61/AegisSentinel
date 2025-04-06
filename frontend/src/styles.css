@@ -154,7 +154,24 @@ body {
     background: rgba(0, 0, 0, 0.2);
 }
 
-/* Tooltip - already defined above, removing duplicate */
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 1000;
+    pointer-events: none;
+    max-width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+}
 
 /* Notification */
 .notification {
@@ -202,20 +219,20 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Health status colors - already defined as fill colors above, adding background versions with different class names */
-.health-status-healthy {
+/* Health status colors */
+.health-healthy {
     background-color: #10B981;
 }
 
-.health-status-warning {
+.health-warning {
     background-color: #F59E0B;
 }
 
-.health-status-critical {
+.health-critical {
     background-color: #EF4444;
 }
 
-.health-status-unknown {
+.health-unknown {
     background-color: #6B7280;
 }
 

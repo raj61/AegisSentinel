@@ -296,41 +296,24 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             .append('circle')
             .attr('r', 20) // Smaller radius
             .attr('fill', d => {
-                // Log node data for debugging
-                console.log(`Node ${d.id}:`, {
-                    name: d.name,
-                    category: d.category,
-                    health_status: d.health_status,
-                    kind: d.kind
-                });
-                
                 // Use gradient based on category if not affected by issues
                 const isAffectedByIssue = issues && issues.some(issue =>
                     issue.affected_nodes && issue.affected_nodes.includes(d.id)
                 );
                 
                 if (isAffectedByIssue) {
-                    console.log(`Node ${d.id} is affected by an issue`);
                     return '#FF5252';
                 }
                 
-                // Check health status (with logging)
-                if (d.health_status) {
-                    console.log(`Node ${d.id} has health status: ${d.health_status}`);
-                    if (d.health_status === 'critical') {
-                        return '#EF4444';
-                    } else if (d.health_status === 'warning') {
-                        return '#F59E0B';
-                    } else if (d.health_status === 'healthy') {
-                        return '#10B981';
-                    }
-                } else {
-                    console.log(`Node ${d.id} has no health status`);
+                if (d.health_status === 'critical') {
+                    return '#EF4444';
+                } else if (d.health_status === 'warning') {
+                    return '#F59E0B';
+                } else if (d.health_status === 'healthy') {
+                    return '#10B981';
                 }
                 
-                // Use category-based gradient as fallback
                 const category = d.category || 'other';
-                console.log(`Node ${d.id} using category color: ${category}`);
                 return gradients[category] || gradients.other;
             })
             .attr('stroke', darkMode ? '#444' : '#fff')

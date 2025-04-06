@@ -34,16 +34,11 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
     
     def translate_path(self, path):
         """Translate URL path to file system path."""
-        # Log the requested path for debugging
-        self.logger.debug(f"Translating path: {path}")
-        
         # Map root to index.html
         if path == '/':
             if self.use_frontend and (self.frontend_dir / 'public' / 'index.html').exists():
-                self.logger.debug(f"Serving frontend index.html from {self.frontend_dir / 'public' / 'index.html'}")
                 return str(self.frontend_dir / 'public' / 'index.html')
             else:
-                self.logger.debug(f"Serving static index.html from {WEB_DIR / 'index.html'}")
                 return str(WEB_DIR / 'index.html')
         
         # Remove leading slash
@@ -60,46 +55,26 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
                 component_path = path.replace('frontend/src/', '')
                 src_path = self.frontend_dir / 'src' / component_path
                 if src_path.exists():
-                    self.logger.debug(f"Serving frontend component from {src_path}")
                     return str(src_path)
             
             # First check in public directory
             public_path = self.frontend_dir / 'public' / path
             if public_path.exists():
-                self.logger.debug(f"Serving from frontend public: {public_path}")
                 return str(public_path)
             
             # Then check in src directory
             src_path = self.frontend_dir / 'src' / path
             if src_path.exists():
-                self.logger.debug(f"Serving from frontend src: {src_path}")
                 return str(src_path)
             
             # Check for direct component references
             if path.startswith('components/'):
                 component_path = self.frontend_dir / 'src' / path
                 if component_path.exists():
-                    self.logger.debug(f"Serving component: {component_path}")
                     return str(component_path)
-                
-            # Special case for React components referenced without frontend/src prefix
-            if path.endswith('.js'):
-                # Try in components directory
-                component_path = self.frontend_dir / 'src' / 'components' / path
-                if component_path.exists():
-                    self.logger.debug(f"Serving component from components dir: {component_path}")
-                    return str(component_path)
-                
-                # Try directly in src directory
-                src_js_path = self.frontend_dir / 'src' / path
-                if src_js_path.exists():
-                    self.logger.debug(f"Serving JS from src dir: {src_js_path}")
-                    return str(src_js_path)
         
         # Otherwise, serve static files
-        static_path = WEB_DIR / path
-        self.logger.debug(f"Serving from static dir: {static_path}")
-        return str(static_path)
+        return str(WEB_DIR / path)
     
     def do_GET(self):
         """Handle GET requests."""
@@ -155,42 +130,11 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({'error': 'No service graph available'}).encode())
             return
         
-        try:
-            # Use simplified graph to avoid duplicate nodes and circular dependencies
-            graph_data = self.service_graph.to_dict(simplified=True)
-            
-            # Log the graph data for debugging
-            logger.debug(f"Graph data: {len(graph_data.get('nodes', []))} nodes, {len(graph_data.get('edges', []))} edges")
-            
-            # Ensure all nodes have required properties
-            for node in graph_data.get('nodes', []):
-                if 'id' not in node:
-                    node['id'] = f"node-{hash(str(node))}"
-                if 'name' not in node:
-                    node['name'] = node.get('id', 'Unknown')
-                if 'category' not in node:
-                    node['category'] = 'other'
-                if 'health_status' not in node:
-                    node['health_status'] = 'unknown'
-            
-            # Ensure all edges have source and target as strings
-            for edge in graph_data.get('edges', []):
-                if isinstance(edge.get('source'), dict):
-                    edge['source'] = edge['source'].get('id')
-                if isinstance(edge.get('target'), dict):
-                    edge['target'] = edge['target'].get('id')
-            
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')  # Allow CORS
-            self.end_headers()
-            self.wfile.write(json.dumps(graph_data).encode())
-        except Exception as e:
-            logger.error(f"Error generating graph JSON: {e}")
-            self.send_response(500)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'error': f'Error generating graph: {str(e)}'}).encode())
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        # Use simplified graph to avoid duplicate nodes and circular dependencies
+        self.wfile.write(self.service_graph.to_json(simplified=True).encode())
     
     def handle_api_nodes(self):
         """Handle GET /api/graph/nodes request."""
