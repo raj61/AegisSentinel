@@ -166,7 +166,43 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
         
         // Apply initial transform after the group is created
         setTimeout(() => {
-            svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+            // Calculate the bounding box of all nodes
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            serviceGraph.nodes.forEach(node => {
+                minX = Math.min(minX, node.x || 0);
+                minY = Math.min(minY, node.y || 0);
+                maxX = Math.max(maxX, node.x || 0);
+                maxY = Math.max(maxY, node.y || 0);
+            });
+            
+            // Add padding
+            const padding = 50;
+            minX -= padding;
+            minY -= padding;
+            maxX += padding;
+            maxY += padding;
+            
+            // Calculate the scale to fit all nodes
+            const graphWidth = maxX - minX;
+            const graphHeight = maxY - minY;
+            const scale = Math.min(
+                width / graphWidth,
+                height / graphHeight,
+                1.0 // Cap the scale to avoid too much zoom
+            ) * 0.9; // 90% to add some margin
+            
+            // Calculate the center of the graph
+            const centerX = (minX + maxX) / 2;
+            const centerY = (minY + maxY) / 2;
+            
+            // Calculate the translation to center the graph
+            const translateX = width / 2 - centerX * scale;
+            const translateY = height / 2 - centerY * scale;
+            
+            // Apply the transform
+            svg.call(zoom.transform, d3.zoomIdentity
+                .translate(translateX, translateY)
+                .scale(scale));
         }, 100);
         
         // Create a defs section for gradient fills
@@ -206,13 +242,22 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             return `url(#${id})`;
         }
         
+        // Create a map of nodes by ID for faster lookups
+        const nodeMap = {};
+        serviceGraph.nodes.forEach(node => {
+            // Ensure each node has initial positions if not already set
+            if (node.x === undefined) node.x = Math.random() * width;
+            if (node.y === undefined) node.y = Math.random() * height;
+            nodeMap[node.id] = node;
+        });
+        
         // Ensure edges have proper source and target references
         const edges = serviceGraph.edges.map(edge => {
             // Handle both string IDs and object references
             let source, target;
             
             if (typeof edge.source === 'string') {
-                source = serviceGraph.nodes.find(n => n.id === edge.source);
+                source = nodeMap[edge.source];
                 if (!source) {
                     console.warn(`Source node not found: ${edge.source}`);
                     return null;
@@ -222,7 +267,7 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             }
             
             if (typeof edge.target === 'string') {
-                target = serviceGraph.nodes.find(n => n.id === edge.target);
+                target = nodeMap[edge.target];
                 if (!target) {
                     console.warn(`Target node not found: ${edge.target}`);
                     return null;
@@ -234,6 +279,12 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             return {...edge, source, target};
         }).filter(edge => edge && edge.source && edge.target);
         
+        // Log the processed edges for debugging
+        console.log('Processed edges:', edges.map(e => ({
+            source: typeof e.source === 'object' ? e.source.id : e.source,
+            target: typeof e.target === 'object' ? e.target.id : e.target
+        })));
+        
         // Log the processed graph data for debugging
         console.log('Processed graph data:', {
             nodes: serviceGraph.nodes.length,
@@ -242,25 +293,34 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
         
         // Create simulation with better forces for proper node positioning
         const simulation = d3.forceSimulation(serviceGraph.nodes)
-            .force('link', d3.forceLink(edges).id(d => d.id).distance(120))
-            .force('charge', d3.forceManyBody().strength(-300))
+            // Link force with increased distance to spread nodes out more
+            .force('link', d3.forceLink(edges).id(d => d.id).distance(150))
+            // Stronger repulsive force to push nodes apart
+            .force('charge', d3.forceManyBody().strength(-800))
+            // Center force to keep the graph centered
             .force('center', d3.forceCenter(width / 2, height / 2))
+            // Collision detection to prevent node overlap
             .force('collision', d3.forceCollide().radius(40))
+            // X and Y forces to pull nodes toward the center
             .force('x', d3.forceX(width / 2).strength(0.1))
             .force('y', d3.forceY(height / 2).strength(0.1));
-            
-        // Run the simulation for a few iterations to stabilize the layout
-        simulation.tick(100);
+        
+        // Run the simulation for more iterations to stabilize the layout
+        // Use a higher alpha value to make the simulation more energetic
+        simulation.alpha(1);
+        for (let i = 0; i < 500; i++) {
+            simulation.tick();
+        }
         
         simulationRef.current = simulation;
         
-        // Create arrow markers
+        // Create arrow markers with better positioning
         svg.append('defs').selectAll('marker')
             .data(['end'])
             .enter().append('marker')
             .attr('id', d => d)
             .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 28)
+            .attr('refX', 20) // Adjusted to better position the arrow at the edge of the node
             .attr('refY', 0)
             .attr('markerWidth', 6)
             .attr('markerHeight', 6)
@@ -269,15 +329,15 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             .attr('d', 'M0,-5L10,0L0,5')
             .attr('fill', darkMode ? '#888' : '#999');
         
-        // Create links with better styling
+        // Create links with better styling and visibility
         const link = g.append('g')
             .selectAll('path')
             .data(edges)
             .enter()
             .append('path')
-            .attr('stroke', darkMode ? '#888' : '#999')
-            .attr('stroke-width', 2)
-            .attr('stroke-opacity', 0.6)
+            .attr('stroke', darkMode ? '#aaa' : '#666') // Darker color for better visibility
+            .attr('stroke-width', 2.5) // Thicker lines
+            .attr('stroke-opacity', 0.8) // More opaque
             .attr('fill', 'none')
             .attr('marker-end', 'url(#end)')
             .style('stroke-dasharray', d => d.type === 'async' ? '5, 5' : 'none')
@@ -412,16 +472,23 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
             .attr('stroke', darkMode ? '#444' : '#fff')
             .attr('stroke-width', 1.5);
         
-        // Add labels
+        // Add labels with better visibility
         const label = nodeGroups
             .append('text')
-            .text(d => d.name || d.id)
+            .text(d => {
+                // Use a shorter name if available, or truncate the ID
+                const displayText = d.name || d.id;
+                return displayText.length > 15 ? displayText.substring(0, 12) + '...' : displayText;
+            })
             .attr('class', 'node-label')
             .attr('font-size', 12)
             .attr('font-weight', 'bold')
             .attr('text-anchor', 'middle')
             .attr('dy', 35)
-            .attr('fill', darkMode ? '#fff' : '#333');
+            .attr('fill', darkMode ? '#fff' : '#333')
+            .attr('stroke', darkMode ? '#1f2937' : 'white')
+            .attr('stroke-width', 0.5)
+            .attr('paint-order', 'stroke');
         
         // Update positions on simulation tick
         simulation.on('tick', () => {
@@ -430,17 +497,36 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
                 .attr('cx', d => d.x = Math.max(30, Math.min(width - 30, d.x)))
                 .attr('cy', d => d.y = Math.max(30, Math.min(height - 30, d.y)));
         
-            // Update link positions with curved paths
-            link.attr('d', d => {
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const dr = Math.sqrt(dx * dx + dy * dy) * 1.5; // Curve radius
-                return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
-            });
-        
-            // Update node group positions
+            // Update node group positions first
             nodeGroups
                 .attr('transform', d => `translate(${d.x}, ${d.y})`);
+                
+            // Update link positions with straight lines
+            link.attr('d', d => {
+                if (!d.source.x || !d.target.x) return '';
+                
+                // Calculate the direction vector
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                
+                // Calculate the length of the vector
+                const length = Math.sqrt(dx * dx + dy * dy);
+                if (length === 0) return '';
+                
+                // Normalize the vector
+                const nx = dx / length;
+                const ny = dy / length;
+                
+                // Calculate start and end points (offset from node centers by node radius)
+                const nodeRadius = 20; // Same as the node radius defined earlier
+                const startX = d.source.x + nx * nodeRadius;
+                const startY = d.source.y + ny * nodeRadius;
+                const endX = d.target.x - nx * nodeRadius;
+                const endY = d.target.y - ny * nodeRadius;
+                
+                // Return a straight line path
+                return `M${startX},${startY}L${endX},${endY}`;
+            });
         });
         
         // Add drag behavior
@@ -479,6 +565,39 @@ const ServiceGraph = ({ darkMode, loading, serviceGraph, issues, onNodeSelect })
                     <button onClick={resetZoom} className="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded p-1 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700 dark:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                        </svg>
+                    </button>
+                    <button
+                        onClick={() => {
+                            // Inject anomaly via API
+                            fetch('/api/inject-anomaly', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ type: 'random' })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Injected anomaly:', data);
+                                    // Show a notification
+                                    alert(`Injected anomaly in service: ${data.affected_service}. It will be automatically resolved in 60 seconds.`);
+                                } else {
+                                    console.error('Failed to inject anomaly:', data.error);
+                                    alert('Failed to inject anomaly: ' + data.error);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error injecting anomaly:', error);
+                                alert('Error injecting anomaly: ' + error.message);
+                            });
+                        }}
+                        className="bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100 hover:bg-red-200 dark:hover:bg-red-600 rounded p-1 transition-colors ml-4"
+                        title="Inject a random anomaly for demonstration purposes"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                     </button>
                 </div>

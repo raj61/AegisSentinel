@@ -246,7 +246,15 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
             
             # Choose a random service to affect
             import random
-            services = self.service_graph.get_nodes()
+            services = list(self.service_graph.get_nodes())
+            
+            if not services:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'No services available for anomaly injection'}).encode())
+                return
+                
             affected_service = random.choice(services)
             
             # Create a synthetic issue ID
@@ -257,7 +265,46 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
             if affected_service in self.service_graph.get_nodes():
                 # Update the node in the graph
                 self.service_graph.update_node_attribute(affected_service, 'health_status', 'critical')
+                
+                # Also update CPU and memory metrics to show anomalous behavior
+                if 'cpu_usage' in self.service_graph.get_node(affected_service):
+                    self.service_graph.update_node_attribute(affected_service, 'cpu_usage', 95.0)  # High CPU usage
+                
+                if 'memory_usage' in self.service_graph.get_node(affected_service):
+                    self.service_graph.update_node_attribute(affected_service, 'memory_usage', 90.0)  # High memory usage
+                
+                if 'error_rate' in self.service_graph.get_node(affected_service):
+                    self.service_graph.update_node_attribute(affected_service, 'error_rate', 0.15)  # High error rate
+                
                 logger.info(f"Injected synthetic issue {issue_id} affecting service {affected_service}")
+                
+                # Schedule automatic resolution after 60 seconds
+                import threading
+                
+                def resolve_issue():
+                    try:
+                        time.sleep(60)  # Wait for 60 seconds
+                        if affected_service in self.service_graph.get_nodes():
+                            # Reset health status
+                            self.service_graph.update_node_attribute(affected_service, 'health_status', 'healthy')
+                            
+                            # Reset metrics
+                            if 'cpu_usage' in self.service_graph.get_node(affected_service):
+                                self.service_graph.update_node_attribute(affected_service, 'cpu_usage', 30.0 + random.random() * 20)
+                            
+                            if 'memory_usage' in self.service_graph.get_node(affected_service):
+                                self.service_graph.update_node_attribute(affected_service, 'memory_usage', 40.0 + random.random() * 20)
+                            
+                            if 'error_rate' in self.service_graph.get_node(affected_service):
+                                self.service_graph.update_node_attribute(affected_service, 'error_rate', 0.01 + random.random() * 0.02)
+                            
+                            logger.info(f"Resolved synthetic issue {issue_id} affecting service {affected_service}")
+                    except Exception as e:
+                        logger.error(f"Error resolving synthetic issue: {e}")
+                
+                # Start the resolution thread
+                resolution_thread = threading.Thread(target=resolve_issue, daemon=True)
+                resolution_thread.start()
                 
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
@@ -265,7 +312,8 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({
                     'success': True,
                     'issue_id': issue_id,
-                    'affected_service': affected_service
+                    'affected_service': affected_service,
+                    'message': f"Injected anomaly in service {affected_service}. Will be automatically resolved in 60 seconds."
                 }).encode())
             else:
                 self.send_response(404)
@@ -273,6 +321,7 @@ class ServiceGraphWebHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': f'Service {affected_service} not found'}).encode())
         except Exception as e:
+            logger.error(f"Error injecting anomaly: {e}")
             self.send_response(500)
             self.send_header('Content-type', 'application/json')
             self.end_headers()

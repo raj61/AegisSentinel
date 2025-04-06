@@ -4147,3 +4147,459 @@
 2025-04-06 11:41:57,283 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
 2025-04-06 11:42:07,510 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue-service attribute health_status to critical
 2025-04-06 11:42:07,511 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406114207 affecting service aegis-demo/queue-service
+2025-04-06 11:42:46,839 - __main__ - INFO - Server interrupted by user
+2025-04-06 11:42:46,839 - __main__ - INFO - Server stopped
+2025-04-06 11:54:26,310 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 11:54:26,363 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmphvnvb_rr/k8s-resources.yaml
+2025-04-06 11:54:26,370 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 11:54:26,370 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 11:54:26,370 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 11:54:26,370 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 11:54:26,370 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 11:54:26,500 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 11:54:37,793 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend attribute health_status to critical
+2025-04-06 11:54:37,799 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406115437 affecting service aegis-demo/frontend
+2025-04-06 11:55:37,803 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend attribute health_status to healthy
+2025-04-06 11:55:37,804 - src.web.server - INFO - Resolved synthetic issue synthetic-issue-20250406115437 affecting service aegis-demo/frontend
+2025-04-06 12:17:23,691 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 12:17:23,745 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmpunj8yb9q/k8s-resources.yaml
+2025-04-06 12:17:23,752 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 12:17:23,752 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 12:17:23,752 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 12:17:23,752 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 12:17:23,752 - __main__ - INFO - Enabling metrics collection from Prometheus at http://localhost:9090
+2025-04-06 12:17:23,783 - __main__ - INFO - Successfully connected to Prometheus
+2025-04-06 12:17:23,783 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-service-.*"}[5m]))
+2025-04-06 12:17:23,791 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,791 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-service-.*"})
+2025-04-06 12:17:23,797 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,797 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:17:23,805 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,805 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:17:23,812 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,812 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend-service"}[5m])) by (le))
+2025-04-06 12:17:23,819 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,819 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend-service, adding simulated metrics
+2025-04-06 12:17:23,819 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:17:23,819 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend-service attribute health_status to warning
+2025-04-06 12:17:23,819 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-service-.*"}[5m]))
+2025-04-06 12:17:23,826 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,826 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-service-.*"})
+2025-04-06 12:17:23,833 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,833 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:17:23,840 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,840 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:17:23,846 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,846 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache-service"}[5m])) by (le))
+2025-04-06 12:17:23,853 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,853 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache-service, adding simulated metrics
+2025-04-06 12:17:23,853 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 397.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:17:23,853 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache-service attribute health_status to warning
+2025-04-06 12:17:23,853 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-service-.*"}[5m]))
+2025-04-06 12:17:23,860 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,860 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-service-.*"})
+2025-04-06 12:17:23,867 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,867 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:17:23,874 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,874 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:17:23,881 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,881 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database-service"}[5m])) by (le))
+2025-04-06 12:17:23,888 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,888 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database-service, adding simulated metrics
+2025-04-06 12:17:23,888 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.39, 'memory_usage': 249.0, 'request_rate': 19.0, 'error_rate': 0.019, 'latency_p95': 0.29000000000000004}
+2025-04-06 12:17:23,888 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database-service attribute health_status to warning
+2025-04-06 12:17:23,888 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-service-.*"}[5m]))
+2025-04-06 12:17:23,894 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,895 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-service-.*"})
+2025-04-06 12:17:23,902 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,902 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:17:23,908 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,908 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:17:23,914 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,914 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend-service"}[5m])) by (le))
+2025-04-06 12:17:23,921 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,921 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend-service, adding simulated metrics
+2025-04-06 12:17:23,921 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 442.0, 'request_rate': 12.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:17:23,921 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend-service attribute health_status to warning
+2025-04-06 12:17:23,921 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-service-.*"}[5m]))
+2025-04-06 12:17:23,927 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,927 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-service-.*"})
+2025-04-06 12:17:23,934 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,934 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:17:23,940 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,940 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:17:23,946 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,946 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue-service"}[5m])) by (le))
+2025-04-06 12:17:23,953 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,953 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue-service, adding simulated metrics
+2025-04-06 12:17:23,953 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.36, 'memory_usage': 246.0, 'request_rate': 16.0, 'error_rate': 0.016, 'latency_p95': 0.26}
+2025-04-06 12:17:23,953 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue-service attribute health_status to warning
+2025-04-06 12:17:23,953 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-.*"}[5m]))
+2025-04-06 12:17:23,959 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,959 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-.*"})
+2025-04-06 12:17:23,965 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,965 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:17:23,971 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,971 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:17:23,977 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,977 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend"}[5m])) by (le))
+2025-04-06 12:17:23,983 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,984 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend, adding simulated metrics
+2025-04-06 12:17:23,984 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.35, 'memory_usage': 385.0, 'request_rate': 15.0, 'error_rate': 0.015, 'latency_p95': 0.25}
+2025-04-06 12:17:23,984 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend attribute health_status to warning
+2025-04-06 12:17:23,984 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-.*"}[5m]))
+2025-04-06 12:17:23,991 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,991 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-.*"})
+2025-04-06 12:17:23,997 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:23,999 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:17:24,006 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,006 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:17:24,014 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,014 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache"}[5m])) by (le))
+2025-04-06 12:17:24,023 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,023 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache, adding simulated metrics
+2025-04-06 12:17:24,023 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.31, 'memory_usage': 451.0, 'request_rate': 21.0, 'error_rate': 0.011, 'latency_p95': 0.21000000000000002}
+2025-04-06 12:17:24,023 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache attribute health_status to warning
+2025-04-06 12:17:24,023 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-.*"}[5m]))
+2025-04-06 12:17:24,031 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,031 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-.*"})
+2025-04-06 12:17:24,038 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,038 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:17:24,044 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,044 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:17:24,051 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,051 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database"}[5m])) by (le))
+2025-04-06 12:17:24,057 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,057 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database, adding simulated metrics
+2025-04-06 12:17:24,057 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:17:24,057 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database attribute health_status to warning
+2025-04-06 12:17:24,057 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-.*"}[5m]))
+2025-04-06 12:17:24,064 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,064 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-.*"})
+2025-04-06 12:17:24,071 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,071 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:17:24,077 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,077 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:17:24,083 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,083 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend"}[5m])) by (le))
+2025-04-06 12:17:24,090 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,090 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend, adding simulated metrics
+2025-04-06 12:17:24,090 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 437.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:17:24,090 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend attribute health_status to warning
+2025-04-06 12:17:24,090 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-.*"}[5m]))
+2025-04-06 12:17:24,097 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,097 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-.*"})
+2025-04-06 12:17:24,103 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,104 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:17:24,109 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,110 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:17:24,116 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,117 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue"}[5m])) by (le))
+2025-04-06 12:17:24,123 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,123 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue, adding simulated metrics
+2025-04-06 12:17:24,123 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 232.0, 'request_rate': 22.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:17:24,123 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue attribute health_status to warning
+2025-04-06 12:17:24,123 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-service-.*"}[5m]))
+2025-04-06 12:17:24,123 - src.metrics.metrics_integration.MetricsIntegration - INFO - Started metrics monitoring thread
+2025-04-06 12:17:24,123 - __main__ - INFO - Started metrics monitoring
+2025-04-06 12:17:24,130 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,130 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-service-.*"})
+2025-04-06 12:17:24,136 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,137 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:17:24,143 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,143 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:17:24,149 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,149 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend-service"}[5m])) by (le))
+2025-04-06 12:17:24,156 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,156 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend-service, adding simulated metrics
+2025-04-06 12:17:24,156 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:17:24,156 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend-service attribute health_status to warning
+2025-04-06 12:17:24,156 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-service-.*"}[5m]))
+2025-04-06 12:17:24,163 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,163 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-service-.*"})
+2025-04-06 12:17:24,170 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,170 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:17:24,177 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,177 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:17:24,184 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,184 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache-service"}[5m])) by (le))
+2025-04-06 12:17:24,190 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,190 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache-service, adding simulated metrics
+2025-04-06 12:17:24,190 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 397.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:17:24,190 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache-service attribute health_status to warning
+2025-04-06 12:17:24,190 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-service-.*"}[5m]))
+2025-04-06 12:17:24,197 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,197 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-service-.*"})
+2025-04-06 12:17:24,203 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,204 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:17:24,210 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,210 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:17:24,216 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,217 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database-service"}[5m])) by (le))
+2025-04-06 12:17:24,224 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,224 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database-service, adding simulated metrics
+2025-04-06 12:17:24,224 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.39, 'memory_usage': 249.0, 'request_rate': 19.0, 'error_rate': 0.019, 'latency_p95': 0.29000000000000004}
+2025-04-06 12:17:24,224 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database-service attribute health_status to warning
+2025-04-06 12:17:24,224 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-service-.*"}[5m]))
+2025-04-06 12:17:24,231 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,231 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-service-.*"})
+2025-04-06 12:17:24,237 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,237 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:17:24,243 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,243 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:17:24,249 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,249 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend-service"}[5m])) by (le))
+2025-04-06 12:17:24,256 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,256 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend-service, adding simulated metrics
+2025-04-06 12:17:24,256 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 442.0, 'request_rate': 12.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:17:24,256 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend-service attribute health_status to warning
+2025-04-06 12:17:24,256 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-service-.*"}[5m]))
+2025-04-06 12:17:24,262 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,262 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-service-.*"})
+2025-04-06 12:17:24,269 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,269 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:17:24,274 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,274 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:17:24,281 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,281 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue-service"}[5m])) by (le))
+2025-04-06 12:17:24,288 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,288 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue-service, adding simulated metrics
+2025-04-06 12:17:24,288 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.36, 'memory_usage': 246.0, 'request_rate': 16.0, 'error_rate': 0.016, 'latency_p95': 0.26}
+2025-04-06 12:17:24,288 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue-service attribute health_status to warning
+2025-04-06 12:17:24,288 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-.*"}[5m]))
+2025-04-06 12:17:24,294 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,294 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-.*"})
+2025-04-06 12:17:24,300 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,300 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:17:24,306 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,306 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:17:24,313 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,313 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend"}[5m])) by (le))
+2025-04-06 12:17:24,320 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,320 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend, adding simulated metrics
+2025-04-06 12:17:24,320 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.35, 'memory_usage': 385.0, 'request_rate': 15.0, 'error_rate': 0.015, 'latency_p95': 0.25}
+2025-04-06 12:17:24,320 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend attribute health_status to warning
+2025-04-06 12:17:24,320 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-.*"}[5m]))
+2025-04-06 12:17:24,359 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,359 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-.*"})
+2025-04-06 12:17:24,370 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,371 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:17:24,372 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 12:17:24,379 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,379 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:17:24,387 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,387 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache"}[5m])) by (le))
+2025-04-06 12:17:24,393 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,393 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache, adding simulated metrics
+2025-04-06 12:17:24,393 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.31, 'memory_usage': 451.0, 'request_rate': 21.0, 'error_rate': 0.011, 'latency_p95': 0.21000000000000002}
+2025-04-06 12:17:24,393 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache attribute health_status to warning
+2025-04-06 12:17:24,393 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-.*"}[5m]))
+2025-04-06 12:17:24,400 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,400 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-.*"})
+2025-04-06 12:17:24,406 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,406 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:17:24,413 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,413 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:17:24,420 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,420 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database"}[5m])) by (le))
+2025-04-06 12:17:24,426 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,426 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database, adding simulated metrics
+2025-04-06 12:17:24,426 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:17:24,426 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database attribute health_status to warning
+2025-04-06 12:17:24,426 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-.*"}[5m]))
+2025-04-06 12:17:24,445 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,445 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-.*"})
+2025-04-06 12:17:24,451 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,452 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:17:24,458 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,458 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:17:24,464 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,464 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend"}[5m])) by (le))
+2025-04-06 12:17:24,473 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,473 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend, adding simulated metrics
+2025-04-06 12:17:24,473 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 437.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:17:24,473 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend attribute health_status to warning
+2025-04-06 12:17:24,473 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-.*"}[5m]))
+2025-04-06 12:17:24,481 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,481 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-.*"})
+2025-04-06 12:17:24,489 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,489 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:17:24,497 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,497 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:17:24,511 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,511 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue"}[5m])) by (le))
+2025-04-06 12:17:24,517 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:17:24,517 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue, adding simulated metrics
+2025-04-06 12:17:24,517 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 232.0, 'request_rate': 22.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:17:24,517 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue attribute health_status to warning
+2025-04-06 12:17:24,517 - src.metrics.metrics_integration.MetricsIntegration - INFO - Updated service metrics
+2025-04-06 12:18:24,705 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-service-.*"}[5m]))
+2025-04-06 12:18:24,729 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,729 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-service-.*"})
+2025-04-06 12:18:24,746 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,746 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:18:24,760 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,760 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend-service"}[5m]))
+2025-04-06 12:18:24,769 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,769 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend-service"}[5m])) by (le))
+2025-04-06 12:18:24,776 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,777 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend-service, adding simulated metrics
+2025-04-06 12:18:24,777 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:18:24,777 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend-service attribute health_status to warning
+2025-04-06 12:18:24,777 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-service-.*"}[5m]))
+2025-04-06 12:18:24,784 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,784 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-service-.*"})
+2025-04-06 12:18:24,791 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,791 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:18:24,799 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,799 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache-service"}[5m]))
+2025-04-06 12:18:24,806 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,806 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache-service"}[5m])) by (le))
+2025-04-06 12:18:24,814 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,814 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache-service, adding simulated metrics
+2025-04-06 12:18:24,814 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 397.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:18:24,814 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache-service attribute health_status to warning
+2025-04-06 12:18:24,814 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-service-.*"}[5m]))
+2025-04-06 12:18:24,822 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,822 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-service-.*"})
+2025-04-06 12:18:24,829 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,829 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:18:24,835 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,836 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database-service"}[5m]))
+2025-04-06 12:18:24,842 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,842 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database-service"}[5m])) by (le))
+2025-04-06 12:18:24,849 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,849 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database-service, adding simulated metrics
+2025-04-06 12:18:24,849 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.39, 'memory_usage': 249.0, 'request_rate': 19.0, 'error_rate': 0.019, 'latency_p95': 0.29000000000000004}
+2025-04-06 12:18:24,849 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database-service attribute health_status to warning
+2025-04-06 12:18:24,849 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-service-.*"}[5m]))
+2025-04-06 12:18:24,857 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,857 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-service-.*"})
+2025-04-06 12:18:24,867 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,867 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:18:24,874 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,874 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend-service"}[5m]))
+2025-04-06 12:18:24,882 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,882 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend-service"}[5m])) by (le))
+2025-04-06 12:18:24,889 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,889 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend-service, adding simulated metrics
+2025-04-06 12:18:24,889 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 442.0, 'request_rate': 12.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:18:24,889 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend-service attribute health_status to warning
+2025-04-06 12:18:24,889 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-service-.*"}[5m]))
+2025-04-06 12:18:24,895 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,895 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-service-.*"})
+2025-04-06 12:18:24,903 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,903 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:18:24,909 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,909 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue-service"}[5m]))
+2025-04-06 12:18:24,916 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,916 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue-service"}[5m])) by (le))
+2025-04-06 12:18:24,923 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,923 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue-service, adding simulated metrics
+2025-04-06 12:18:24,923 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.36, 'memory_usage': 246.0, 'request_rate': 16.0, 'error_rate': 0.016, 'latency_p95': 0.26}
+2025-04-06 12:18:24,923 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue-service attribute health_status to warning
+2025-04-06 12:18:24,923 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"backend-.*"}[5m]))
+2025-04-06 12:18:24,929 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,929 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"backend-.*"})
+2025-04-06 12:18:24,935 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,936 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:18:24,941 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,942 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="backend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="backend"}[5m]))
+2025-04-06 12:18:24,948 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,948 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="backend"}[5m])) by (le))
+2025-04-06 12:18:24,955 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,955 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for backend, adding simulated metrics
+2025-04-06 12:18:24,955 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.35, 'memory_usage': 385.0, 'request_rate': 15.0, 'error_rate': 0.015, 'latency_p95': 0.25}
+2025-04-06 12:18:24,955 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend attribute health_status to warning
+2025-04-06 12:18:24,955 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"cache-.*"}[5m]))
+2025-04-06 12:18:24,961 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,961 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"cache-.*"})
+2025-04-06 12:18:24,968 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,968 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:18:24,974 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,974 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="cache", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="cache"}[5m]))
+2025-04-06 12:18:24,981 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,981 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="cache"}[5m])) by (le))
+2025-04-06 12:18:24,988 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,988 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for cache, adding simulated metrics
+2025-04-06 12:18:24,988 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.31, 'memory_usage': 451.0, 'request_rate': 21.0, 'error_rate': 0.011, 'latency_p95': 0.21000000000000002}
+2025-04-06 12:18:24,988 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache attribute health_status to warning
+2025-04-06 12:18:24,988 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"database-.*"}[5m]))
+2025-04-06 12:18:24,995 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:24,995 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"database-.*"})
+2025-04-06 12:18:25,003 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,004 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:18:25,010 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,011 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="database", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="database"}[5m]))
+2025-04-06 12:18:25,018 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,018 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="database"}[5m])) by (le))
+2025-04-06 12:18:25,025 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,025 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for database, adding simulated metrics
+2025-04-06 12:18:25,025 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32999999999999996, 'memory_usage': 453.0, 'request_rate': 23.0, 'error_rate': 0.013000000000000001, 'latency_p95': 0.23}
+2025-04-06 12:18:25,025 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database attribute health_status to warning
+2025-04-06 12:18:25,026 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"frontend-.*"}[5m]))
+2025-04-06 12:18:25,032 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,032 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"frontend-.*"})
+2025-04-06 12:18:25,038 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,038 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:18:25,045 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,045 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="frontend", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="frontend"}[5m]))
+2025-04-06 12:18:25,051 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,051 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="frontend"}[5m])) by (le))
+2025-04-06 12:18:25,072 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,073 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for frontend, adding simulated metrics
+2025-04-06 12:18:25,073 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.37, 'memory_usage': 437.0, 'request_rate': 27.0, 'error_rate': 0.017, 'latency_p95': 0.27}
+2025-04-06 12:18:25,073 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/frontend attribute health_status to warning
+2025-04-06 12:18:25,073 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying CPU usage with: sum(rate(container_cpu_usage_seconds_total{namespace="aegis-demo", pod=~"queue-.*"}[5m]))
+2025-04-06 12:18:25,079 - src.metrics.prometheus_collector.PrometheusCollector - INFO - CPU result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,079 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying memory usage with: sum(container_memory_usage_bytes{namespace="aegis-demo", pod=~"queue-.*"})
+2025-04-06 12:18:25,087 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Memory result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,088 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying request rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:18:25,096 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Request rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,097 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying error rate with: sum(rate(http_requests_total{namespace="aegis-demo", service="queue", status=~"5.."}[5m])) / sum(rate(http_requests_total{namespace="aegis-demo", service="queue"}[5m]))
+2025-04-06 12:18:25,106 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Error rate result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,106 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Querying latency with: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{namespace="aegis-demo", service="queue"}[5m])) by (le))
+2025-04-06 12:18:25,113 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Latency result: {'status': 'success', 'data': {'resultType': 'vector', 'result': []}}
+2025-04-06 12:18:25,113 - src.metrics.prometheus_collector.PrometheusCollector - INFO - No metrics found for queue, adding simulated metrics
+2025-04-06 12:18:25,113 - src.metrics.prometheus_collector.PrometheusCollector - INFO - Added simulated metrics: {'cpu_usage': 0.32, 'memory_usage': 232.0, 'request_rate': 22.0, 'error_rate': 0.012, 'latency_p95': 0.22}
+2025-04-06 12:18:25,113 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/queue attribute health_status to warning
+2025-04-06 12:18:25,113 - src.metrics.metrics_integration.MetricsIntegration - INFO - Updated service metrics
+2025-04-06 12:18:35,451 - __main__ - INFO - Server interrupted by user
+2025-04-06 12:18:36,157 - src.metrics.metrics_integration.MetricsIntegration - INFO - Stopped metrics monitoring thread
+2025-04-06 12:18:36,157 - __main__ - INFO - Stopped metrics monitoring
+2025-04-06 12:18:36,157 - __main__ - INFO - Server stopped
+2025-04-06 12:19:22,284 - __main__ - INFO - Copied microservices-demo.yaml to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmpumcgo8jb/microservices-demo.yaml
+2025-04-06 12:19:22,295 - __main__ - INFO - Parsed demo Kubernetes resources from YAML file
+2025-04-06 12:19:22,295 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 12:19:22,295 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 12:19:22,295 - __main__ - INFO - Built service graph with 11 nodes and 13 edges
+2025-04-06 12:19:22,430 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 12:23:34,018 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 12:23:34,072 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmp345kiu53/k8s-resources.yaml
+2025-04-06 12:23:34,079 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 12:23:34,079 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 12:23:34,079 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 12:23:34,079 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 12:23:34,079 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 12:23:40,661 - __main__ - INFO - Server interrupted by user
+2025-04-06 12:23:40,661 - __main__ - INFO - Server stopped
+2025-04-06 12:24:02,686 - __main__ - INFO - Fetching services from namespace aegis-demo
+2025-04-06 12:24:02,748 - __main__ - INFO - Wrote Kubernetes resources to /var/folders/6f/2l8z4_515dq8twgg1xv2nk5c0000gn/T/tmpoc_tdrh1/k8s-resources.yaml
+2025-04-06 12:24:02,755 - __main__ - INFO - Parsed real Kubernetes resources from cluster
+2025-04-06 12:24:02,755 - src.graph.service_graph.ServiceGraph - INFO - Inferring relationships between services...
+2025-04-06 12:24:02,755 - src.graph.service_graph.ServiceGraph - INFO - Inference complete. Added relationships based on common patterns.
+2025-04-06 12:24:02,755 - __main__ - INFO - Built service graph with 10 nodes and 4 edges
+2025-04-06 12:24:02,755 - __main__ - WARNING - Prometheus URL not provided, metrics collection disabled
+2025-04-06 12:24:03,010 - src.web.server - INFO - Starting web server on 0.0.0.0:8080
+2025-04-06 14:08:34,069 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend attribute health_status to critical
+2025-04-06 14:08:34,071 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406140834 affecting service aegis-demo/backend
+2025-04-06 14:09:34,072 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/backend attribute health_status to healthy
+2025-04-06 14:09:34,074 - src.web.server - INFO - Resolved synthetic issue synthetic-issue-20250406140834 affecting service aegis-demo/backend
+2025-04-06 14:13:22,039 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database attribute health_status to critical
+2025-04-06 14:13:22,041 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406141322 affecting service aegis-demo/database
+2025-04-06 14:13:31,178 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache-service attribute health_status to critical
+2025-04-06 14:13:31,178 - src.web.server - INFO - Injected synthetic issue synthetic-issue-20250406141331 affecting service aegis-demo/cache-service
+2025-04-06 14:14:22,046 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/database attribute health_status to healthy
+2025-04-06 14:14:22,046 - src.web.server - INFO - Resolved synthetic issue synthetic-issue-20250406141322 affecting service aegis-demo/database
+2025-04-06 14:14:31,182 - src.graph.service_graph.ServiceGraph - INFO - Updated node aegis-demo/cache-service attribute health_status to healthy
+2025-04-06 14:14:31,183 - src.web.server - INFO - Resolved synthetic issue synthetic-issue-20250406141331 affecting service aegis-demo/cache-service

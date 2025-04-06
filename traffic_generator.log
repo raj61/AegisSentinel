@@ -293,3 +293,104 @@
 2025-04-06 09:50:31,130 - __main__ - INFO - Sent/simulated 2630 requests with 37 errors
 2025-04-06 09:50:31,131 - __main__ - INFO - Traffic generation complete
 2025-04-06 09:50:31,131 - __main__ - INFO - Done
+2025-04-06 14:40:00,063 - __main__ - INFO - Getting services in namespace aegis-demo
+2025-04-06 14:40:00,304 - __main__ - INFO - Found 5 services: backend-service, cache-service, database-service, frontend-service, queue-service
+2025-04-06 14:40:00,304 - __main__ - INFO - Setting up port forwarding for backend-service from local port 8081 to service port 8080
+2025-04-06 14:40:01,308 - __main__ - INFO - Setting up port forwarding for cache-service from local port 8082 to service port 6379
+2025-04-06 14:40:02,315 - __main__ - INFO - Setting up port forwarding for database-service from local port 8083 to service port 27017
+2025-04-06 14:40:03,324 - __main__ - INFO - Setting up port forwarding for frontend-service from local port 8084 to service port 80
+2025-04-06 14:40:04,333 - __main__ - INFO - Setting up port forwarding for queue-service from local port 8085 to service port 5672
+2025-04-06 14:40:05,348 - __main__ - INFO - Generating traffic to backend-service at http://localhost:8081
+2025-04-06 14:40:05,349 - __main__ - INFO - Generating traffic to cache-service at http://localhost:8082
+2025-04-06 14:40:05,350 - __main__ - INFO - Generating traffic to database-service at http://localhost:8083
+2025-04-06 14:40:05,350 - __main__ - INFO - Generating traffic to frontend-service at http://localhost:8084
+2025-04-06 14:40:05,350 - __main__ - INFO - Generating traffic to queue-service at http://localhost:8085
+2025-04-06 14:40:05,351 - __main__ - INFO - Generating traffic for 300 seconds
+2025-04-06 14:40:05,351 - __main__ - INFO - Press Ctrl+C to stop early
+2025-04-06 14:40:05,373 - __main__ - INFO - Error connecting to queue-service: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-04-06 14:40:05,373 - __main__ - INFO - Switching to traffic simulation mode for queue-service
+2025-04-06 14:40:05,875 - __main__ - INFO - Error connecting to cache-service: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-04-06 14:40:05,875 - __main__ - INFO - Switching to traffic simulation mode for cache-service
+2025-04-06 14:40:08,989 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:09,386 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:17,258 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:27,898 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:36,346 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:46,761 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:53,386 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:54,557 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:40:57,443 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:06,853 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:08,927 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:14,284 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:23,942 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:25,758 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:27,312 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:28,502 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:41,237 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:41,641 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:47,735 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:47,939 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:49,937 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:50,738 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:41:57,334 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:01,104 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:04,317 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:13,078 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:19,064 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:23,972 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:26,892 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:28,117 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:33,310 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:35,199 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:41,701 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:42,215 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:43,196 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:47,767 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:49,525 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:56,964 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:57,371 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:42:57,583 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:00,593 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:02,848 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:02,978 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:08,719 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:14,887 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:16,755 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:18,920 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:24,830 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:25,193 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:27,695 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:34,519 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:46,785 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:48,940 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:57,136 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:43:58,965 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:05,708 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:06,763 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:15,171 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:19,650 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:19,973 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:23,759 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:24,682 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:25,196 - __main__ - INFO - Error connecting to frontend-service: HTTPConnectionPool(host='localhost', port=8084): Read timed out. (read timeout=1)
+2025-04-06 14:44:25,197 - __main__ - INFO - Switching to traffic simulation mode for frontend-service
+2025-04-06 14:44:25,420 - __main__ - INFO - Error connecting to database-service: HTTPConnectionPool(host='localhost', port=8083): Read timed out. (read timeout=1)
+2025-04-06 14:44:25,421 - __main__ - INFO - Switching to traffic simulation mode for database-service
+2025-04-06 14:44:30,078 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:34,425 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:39,375 - __main__ - INFO - Request to backend-service returned error: 500
+2025-04-06 14:44:47,398 - __main__ - INFO - Error connecting to backend-service: HTTPConnectionPool(host='localhost', port=8081): Read timed out. (read timeout=1)
+2025-04-06 14:44:47,408 - __main__ - INFO - Switching to traffic simulation mode for backend-service
+2025-04-06 14:45:19,347 - __main__ - INFO - Traffic generation complete for backend-service
+2025-04-06 14:45:19,348 - __main__ - INFO - Traffic generation complete for cache-service
+2025-04-06 14:45:19,468 - __main__ - INFO - Sent/simulated 2792 requests with 297 errors
+2025-04-06 14:45:19,348 - __main__ - INFO - Traffic generation complete for frontend-service
+2025-04-06 14:45:19,349 - __main__ - INFO - Traffic generation complete for queue-service
+2025-04-06 14:45:19,468 - __main__ - INFO - Sent/simulated 1326 requests with 76 errors
+2025-04-06 14:45:19,468 - __main__ - INFO - Sent/simulated 2534 requests with 26 errors
+2025-04-06 14:45:19,348 - __main__ - INFO - Traffic generation complete for database-service
+2025-04-06 14:45:19,468 - __main__ - INFO - Sent/simulated 2800 requests with 274 errors
+2025-04-06 14:45:19,468 - __main__ - INFO - Sent/simulated 2532 requests with 28 errors
+2025-04-06 14:45:19,468 - __main__ - INFO - Traffic generation complete
+2025-04-06 14:45:19,469 - __main__ - INFO - Done

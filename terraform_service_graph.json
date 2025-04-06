@@ -1,0 +1,348 @@
+{
+  "nodes": [
+    {
+      "id": "aws_vpc.main",
+      "name": "main",
+      "type": "aws_vpc",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_subnet.public",
+      "name": "public",
+      "type": "aws_subnet",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_subnet.private",
+      "name": "private",
+      "type": "aws_subnet",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_internet_gateway.main",
+      "name": "main",
+      "type": "aws_internet_gateway",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_route_table.public",
+      "name": "public",
+      "type": "aws_route_table",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_route_table_association.public",
+      "name": "public",
+      "type": "aws_route_table_association",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_security_group.alb",
+      "name": "alb",
+      "type": "aws_security_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_security_group.frontend",
+      "name": "frontend",
+      "type": "aws_security_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_security_group.api",
+      "name": "api",
+      "type": "aws_security_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_security_group.db",
+      "name": "db",
+      "type": "aws_security_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_cluster.main",
+      "name": "main",
+      "type": "aws_ecs_cluster",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_task_definition.frontend",
+      "name": "frontend",
+      "type": "aws_ecs_task_definition",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_service.frontend",
+      "name": "frontend",
+      "type": "aws_ecs_service",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_task_definition.api_gateway",
+      "name": "api_gateway",
+      "type": "aws_ecs_task_definition",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_service.api_gateway",
+      "name": "api_gateway",
+      "type": "aws_ecs_service",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_task_definition.user_service",
+      "name": "user_service",
+      "type": "aws_ecs_task_definition",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_service.user_service",
+      "name": "user_service",
+      "type": "aws_ecs_service",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_task_definition.product_service",
+      "name": "product_service",
+      "type": "aws_ecs_task_definition",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_ecs_service.product_service",
+      "name": "product_service",
+      "type": "aws_ecs_service",
+      "category": "container",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_service_discovery_private_dns_namespace.main",
+      "name": "main",
+      "type": "aws_service_discovery_private_dns_namespace",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_service_discovery_service.api_gateway",
+      "name": "api_gateway",
+      "type": "aws_service_discovery_service",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_service_discovery_service.user_service",
+      "name": "user_service",
+      "type": "aws_service_discovery_service",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_service_discovery_service.product_service",
+      "name": "product_service",
+      "type": "aws_service_discovery_service",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb.external",
+      "name": "external",
+      "type": "aws_lb",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb.internal",
+      "name": "internal",
+      "type": "aws_lb",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb_target_group.frontend",
+      "name": "frontend",
+      "type": "aws_lb_target_group",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb_target_group.api",
+      "name": "api",
+      "type": "aws_lb_target_group",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb_listener.frontend",
+      "name": "frontend",
+      "type": "aws_lb_listener",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_lb_listener.api",
+      "name": "api",
+      "type": "aws_lb_listener",
+      "category": "loadbalancer",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_rds_cluster.user_db",
+      "name": "user_db",
+      "type": "aws_rds_cluster",
+      "category": "database",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_rds_cluster_instance.user_db",
+      "name": "user_db",
+      "type": "aws_rds_cluster_instance",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_docdb_cluster.product_db",
+      "name": "product_db",
+      "type": "aws_docdb_cluster",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_docdb_cluster_instance.product_db",
+      "name": "product_db",
+      "type": "aws_docdb_cluster_instance",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_db_subnet_group.main",
+      "name": "main",
+      "type": "aws_db_subnet_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_docdb_subnet_group.main",
+      "name": "main",
+      "type": "aws_docdb_subnet_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_secretsmanager_secret.db_credentials",
+      "name": "db_credentials",
+      "type": "aws_secretsmanager_secret",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_secretsmanager_secret_version.db_credentials",
+      "name": "db_credentials",
+      "type": "aws_secretsmanager_secret_version",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role.ecs_execution_role",
+      "name": "ecs_execution_role",
+      "type": "aws_iam_role",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role_policy_attachment.ecs_execution_role_policy",
+      "name": "ecs_execution_role_policy",
+      "type": "aws_iam_role_policy_attachment",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role_policy.ecs_execution_secrets",
+      "name": "ecs_execution_secrets",
+      "type": "aws_iam_role_policy",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_iam_role.ecs_task_role",
+      "name": "ecs_task_role",
+      "type": "aws_iam_role",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_cloudwatch_log_group.frontend",
+      "name": "frontend",
+      "type": "aws_cloudwatch_log_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_cloudwatch_log_group.api_gateway",
+      "name": "api_gateway",
+      "type": "aws_cloudwatch_log_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_cloudwatch_log_group.user_service",
+      "name": "user_service",
+      "type": "aws_cloudwatch_log_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_cloudwatch_log_group.product_service",
+      "name": "product_service",
+      "type": "aws_cloudwatch_log_group",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_appautoscaling_target.frontend",
+      "name": "frontend",
+      "type": "aws_appautoscaling_target",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_appautoscaling_policy.frontend_cpu",
+      "name": "frontend_cpu",
+      "type": "aws_appautoscaling_policy",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_appautoscaling_target.api_gateway",
+      "name": "api_gateway",
+      "type": "aws_appautoscaling_target",
+      "category": "other",
+      "provider": "aws"
+    },
+    {
+      "id": "aws_appautoscaling_policy.api_gateway_cpu",
+      "name": "api_gateway_cpu",
+      "type": "aws_appautoscaling_policy",
+      "category": "other",
+      "provider": "aws"
+    }
+  ],
+  "edges": []
+}
